@@ -7,7 +7,11 @@ private:
     QString instruction;
     QString dec;
 public:
-F2() {};
+F2()
+{
+    this->instruction="NOP";
+    this->dec = "NO OPERATION";
+};
 F2(QString ins , QString d)
 {
     this->instruction = ins;
@@ -21,6 +25,16 @@ void set_intersection(QString ins)
 void set_dec(QString d)
 {
     this->dec = d;
+};
+
+QString get_intersection()
+{
+    return this->instruction;
+};
+
+QString get_dec()
+{
+    return this->dec;
 };
 
 };

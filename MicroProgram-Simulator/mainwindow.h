@@ -22,6 +22,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     bool isNumber(const QString& str);
+    bool isCondition(const QString& str);
+    bool isBranch(const QString& str);
+    int command_f(QString command , int check);
 
 private slots:
     void on_pushButton_clicked();

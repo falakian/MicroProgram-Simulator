@@ -27,6 +27,17 @@ void set_dec(QString d)
 {
     this->dec = d;
 };
+
+QString get_intersection()
+{
+    return this->instruction;
+};
+
+QString get_dec()
+{
+    return this->dec;
+};
+
 };
 
 #endif
