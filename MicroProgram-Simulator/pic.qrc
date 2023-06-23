@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>pic/continue.png</file>
+        <file>pic/new.png</file>
+        <file>pic/open.png</file>
+        <file>pic/restart.png</file>
+        <file>pic/save.png</file>
+        <file>pic/stepnext.png</file>
+        <file>pic/stop.png</file>
+        <file>pic/closeicon.png</file>
+        <file>pic/compile.png</file>
+        <file>pic/debug.png</file>
+        <file>pic/run.png</file>
+        <file>pic/about.png</file>
+        <file>pic/icon.png</file>
+    </qresource>
+</RCC>
