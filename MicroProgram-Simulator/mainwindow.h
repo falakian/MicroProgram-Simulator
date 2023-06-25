@@ -28,6 +28,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void printTable_RAM();
     bool isNumber(const QString& str);
     bool isCondition(const QString& str);
     bool isBranch(const QString& str);
