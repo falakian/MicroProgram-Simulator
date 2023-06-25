@@ -160,6 +160,44 @@ void MainWindow::printTable_Microgram()
         }
 };
 
+QString decToHexa(int n)
+{
+    // ans string to store hexadecimal number
+    QString ans = "";
+
+    while (n != 0) {
+        // remainder variable to store remainder
+        int rem = 0;
+
+        // ch variable to store each character
+        char ch;
+        // storing remainder in rem variable.
+        rem = n % 16;
+
+        // check if temp < 10
+        if (rem < 10) {
+            ch = rem + 48;
+        }
+        else {
+            ch = rem + 55;
+        }
+
+        // updating the ans string with the character variable
+        ans += ch;
+        n = n / 16;
+    }
+
+    // reversing the ans string to get the final result
+    int i = 0, j = ans.size() - 1;
+    while(i <= j)
+    {
+      swap(ans[i], ans[j]);
+      i++;
+      j--;
+    }
+    return ans;
+};
+
 bool MainWindow::isNumber(const QString &str)
 {
     string check=str.toStdString();
@@ -815,6 +853,24 @@ if(error !=1)
             }
             if(error)
                 break;
+            else
+            {
+                QTableWidgetItem *itF1 = new QTableWidgetItem();
+                QTableWidgetItem *itF2 = new QTableWidgetItem();
+                QTableWidgetItem *itF3 = new QTableWidgetItem();
+                QTableWidgetItem *itCD = new QTableWidgetItem();
+                QTableWidgetItem *itBR = new QTableWidgetItem();
+                QTableWidgetItem *itAD = new QTableWidgetItem();
+                QTableWidgetItem *itmHex = new QTableWidgetItem();
+                itF1->setText(ram_micro.at(lc1).get_f1().get_intersection());
+                itF2->setText(ram_micro.at(lc1).get_f2().get_intersection());
+                itF3->setText(ram_micro.at(lc1).get_f3().get_intersection());
+                itCD->setText(ram_micro.at(lc1).get_cd());
+                itBR->setText(ram_micro.at(lc1).get_br());
+                itAD->setText(decToHexa(ram_micro.at(lc1).get_address()));
+
+                ui->Microprogram_table->setItem(i,7,itmHex);
+            }
         }
     }
 }

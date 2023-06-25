@@ -20,50 +20,50 @@ public:
         this->condition=0;
         this->branch=0;
         this->address=0;
-    }
+    };
     void set_f1(F1 f1_code)
     {
        this->f1.set_intersection(f1_code.get_intersection());
        this->f1.set_dec(f1_code.get_dec());
-    }
+    };
     void set_f2(F2 f2_code)
     {
        this->f2.set_intersection(f2_code.get_intersection());
        this->f2.set_dec(f2_code.get_dec());
-    }
+    };
     void set_f3(F3 f3_code)
     {
        this->f3.set_intersection(f3_code.get_intersection());
        this->f3.set_dec(f3_code.get_dec());
-    }
+    };
     void set_condition(int c)
     {
         this->condition = c;
-    }
+    };
     void set_branch(int b)
     {
         this-> branch = b;
-    }
+    };
     void set_address(int a)
     {
         this->address=a;
-    }
+    };
     void set_write(bool a)
     {
         this->write=a;
-    }
+    };
     F1 get_f1()
     {
         return this->f1;
-    }
+    };
     F2 get_f2()
     {
         return this->f2;
-    }
+    };
     F3 get_f3()
     {
         return this->f3;
-    }
+    };
     QString get_cd()
     {
         switch( this->condition)
@@ -82,7 +82,7 @@ public:
             break;
         }
         return "";
-    }
+    };
     QString get_br()
     {
         switch( this->branch)
@@ -101,7 +101,11 @@ public:
             break;
         }
         return "";
-    }
+    };
+    int get_address()
+    {
+        return this->address;
+    };
     microprogram_i& operator=( microprogram_i& s)
     {
       this->~microprogram_i();
