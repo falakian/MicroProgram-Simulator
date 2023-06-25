@@ -29,6 +29,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void printTable_RAM();
+    void printTable_Microgram();
     bool isNumber(const QString& str);
     bool isCondition(const QString& str);
     bool isBranch(const QString& str);

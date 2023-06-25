@@ -114,7 +114,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->continue_2->setIconSize(QSize(35,35));
     ui->restart->setIconSize(QSize(35,35));
     ui->stop->setIconSize(QSize(35,35));
+    ui->RAM_table->horizontalHeader()->resizeSections(QHeaderView::Interactive);
+    ui->RAM_table->horizontalHeader()->resizeSections(QHeaderView::Interactive);
     printTable_RAM();
+    printTable_Microgram();
 }
 
 
@@ -137,6 +140,23 @@ void MainWindow::printTable_RAM()
             ui->RAM_table->insertRow(i);
             ui->RAM_table->setItem(i,0,itmaddr);
             ui->RAM_table->setItem(i,2,itmHex);
+        }
+};
+
+void MainWindow::printTable_Microgram()
+{
+        ui->Microprogram_table->setRowCount(0);
+        ui->Microprogram_table->horizontalHeader()->setStyleSheet("color: black");
+        for(int i=0;i<128;i++)
+        {
+            QString address = QString::number( i, 16 ).toUpper();
+            QTableWidgetItem *itmaddr = new QTableWidgetItem();
+            QTableWidgetItem *itmHex = new QTableWidgetItem();
+            itmaddr->setText(address);
+            itmHex->setText("0000");
+            ui->Microprogram_table->insertRow(i);
+            ui->Microprogram_table->setItem(i,0,itmaddr);
+            ui->Microprogram_table->setItem(i,7,itmHex);
         }
 };
 
