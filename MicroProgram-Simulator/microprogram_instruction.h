@@ -64,6 +64,44 @@ public:
     {
         return this->f3;
     }
+    QString get_cd()
+    {
+        switch( this->condition)
+        {
+        case 0:
+            return "U";
+            break;
+        case 1:
+            return "I";
+            break;
+        case 2:
+            return "S";
+            break;
+        case 3:
+            return "Z";
+            break;
+        }
+        return "";
+    }
+    QString get_br()
+    {
+        switch( this->branch)
+        {
+        case 0:
+            return "JMP";
+            break;
+        case 1:
+            return "CALL";
+            break;
+        case 2:
+            return "RET";
+            break;
+        case 3:
+            return "MAP";
+            break;
+        }
+        return "";
+    }
     microprogram_i& operator=( microprogram_i& s)
     {
       this->~microprogram_i();
