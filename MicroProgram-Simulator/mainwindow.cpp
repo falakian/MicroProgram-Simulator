@@ -96,7 +96,11 @@ MainWindow::MainWindow(QWidget *parent)
     {
         ram_micro[i] = new microprogram_i();
     }
-    //ram_assembly.resize(2048);
+    ram_assembly.resize(2048);
+    for(int i=0 ; i<2048 ; i++)
+    {
+        ram_assembly[i] = new assembly_i();
+    }
     setWindowIcon(QIcon(":/new/prefix1/pic/icon.png"));
     ui->save_assembly->setIcon(QIcon(":/new/prefix1/pic/save.png"));
     ui->open_assembly->setIcon(QIcon(":/new/prefix1/pic/open.png"));
@@ -122,6 +126,8 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->Microprogram_table->horizontalHeader()->resizeSections(QHeaderView::Interactive);
     printTable_RAM();
     printTable_Microgram();
+    table_variable_ins[129] = "HEX";
+    table_variable_ins[130] = "DEC";
 }
 
 
@@ -162,7 +168,7 @@ void MainWindow::printTable_Microgram()
         }
 };
 
-void MainWindow::printrow_ram(int lc)
+void MainWindow::printrow_ram_micro(int lc)
 {
     ui->Microprogram_table->setItem(lc,1,new QTableWidgetItem(ram_micro.at(lc)->get_f1().get_intersection()));
     ui->Microprogram_table->setItem(lc,2,new QTableWidgetItem(ram_micro.at(lc)->get_f2().get_intersection()));
@@ -184,6 +190,20 @@ void MainWindow::printrow_ram(int lc)
 
     ui->Microprogram_table->setItem(lc,6,itAD);
     ui->Microprogram_table->setItem(lc,7,itmHex);
+};
+
+void MainWindow::printrow_ram(int lc)
+{
+    ui->RAM_table->setItem(lc,1,new QTableWidgetItem(table_variable_ins[ram_assembly.at(lc)->get_instruction()]));
+    QTableWidgetItem *itmHex = new QTableWidgetItem();
+    bitset<1> i_bit(ram_assembly.at(lc)->get_i());
+    bitset<4> ins_bit(ram_assembly.at(lc)->get_instruction());
+    bitset<11> ad_bit(ram_assembly.at(lc)->get_address());
+    bitset<16> micro_instruction(string(i_bit.to_string()+ins_bit.to_string()+ad_bit.to_string()));
+    QString hex = dectohex(micro_instruction.to_ulong());
+    itmHex->setText(hex);
+    ui->RAM_table->setItem(lc,2,itmHex);
+
 };
 
 QString MainWindow::dectohex(int n)
@@ -503,6 +523,7 @@ if(error !=1)
                                 }
                                 instruction->set_branch(branch[riz_f_command.at(2)]);
                                 instruction->set_condition(condition[riz_f_command.at(1)]);
+                                instruction->set_address(0);
                                 instruction->set_write(true);
                                 ram_micro.at(lc1)->set(instruction);
                             }
@@ -648,6 +669,7 @@ if(error !=1)
                                     }
                                 instruction->set_branch(branch[riz_f_command.at(2)]);
                                 instruction->set_condition(condition[riz_f_command.at(1)]);
+                                instruction->set_address(0);
                                 instruction->set_write(true);
                                 if(instruction->get_f1().get_dec() == instruction->get_f2().get_dec() || instruction->get_f1().get_dec() == instruction->get_f3().get_dec() || instruction->get_f2().get_dec() == instruction->get_f3().get_dec())
                                 {
@@ -777,6 +799,7 @@ if(error !=1)
                                             instruction->set_branch(branch[riz_f_command.at(2)]);
                                             instruction->set_condition(condition[riz_f_command.at(1)]);
                                             instruction->set_write(true);
+                                            instruction->set_address(0);
                                             if(instruction->get_f1().get_dec() == instruction->get_f2().get_dec() || instruction->get_f1().get_dec() == instruction->get_f3().get_dec() || instruction->get_f2().get_dec() == instruction->get_f3().get_dec())
                                             {
                                                 ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
@@ -879,7 +902,7 @@ if(error !=1)
                 break;
             else
             {
-                printrow_ram(lc1);
+                printrow_ram_micro(lc1);
                 lc1++;
             }
         }
@@ -888,11 +911,11 @@ if(error !=1)
 if(error != 1)
 {
     ui->console->setText("Microprogram was compiled successfully \n");
-     //compile_assembly();
+     compile_assembly();
 }
 }
 
-/*void MainWindow::compile_assembly()
+void MainWindow::compile_assembly()
 {
     tcommmands = ui->assembly->document()->blockCount();
     QTextDocument *doc = ui->assembly->document();
@@ -986,7 +1009,7 @@ if(error != 1)
     }
     else
     {
-        assembly_i instruction;
+        assembly_i* instruction = new assembly_i();
         QStringList check1 , check2 , assembel;
         int address;
         for(int i=1;i<=tcommmands;i++)
@@ -1004,8 +1027,6 @@ if(error != 1)
                 lc1=check1.at(1).toInt(&ok,16);
                 continue;
             }
-            else
-                lc1++;
             if(tb.text()[0] != '/')
             {
                 riz_command = tb.text().split('/', Qt::SkipEmptyParts);
@@ -1030,11 +1051,11 @@ if(error != 1)
                         {
                             bool ok=1;
                             address=assembel.at(1).toInt(&ok,16);
-                            instruction.set_instruction(129);
-                            instruction.set_i(false);
-                            instruction.set_address(address);
-                            instruction.set_write(true);
-                            ram_assembly.at(lc1)=instruction;
+                            instruction->set_instruction(129);
+                            instruction->set_i(false);
+                            instruction->set_address(address);
+                            instruction->set_write(true);
+                            ram_assembly.at(lc1)->set(instruction);
                         }
                         else
                         {
@@ -1042,37 +1063,47 @@ if(error != 1)
                             {
                                 bool ok=1;
                                 address=assembel.at(1).toInt(&ok,10);
-                                instruction.set_instruction(130);
-                                instruction.set_i(false);
-                                instruction.set_address(address);
-                                instruction.set_write(true);
-                                ram_assembly.at(lc1)=instruction;
+                                instruction->set_instruction(130);
+                                instruction->set_i(false);
+                                instruction->set_address(address);
+                                instruction->set_write(true);
+                                ram_assembly.at(lc1)->set(instruction);
                             }
                             else
                             {
-                                if(table_variable[assembel.at(0)] <64)
+                                if(table_variable[assembel.at(0)] < 64)
                                 {
-                                    instruction.set_instruction(table_variable[assembel.at(0)]);
-                                    instruction.set_i(false);
-                                    instruction.set_write(true);
-                                    if(table_variable_assembly.find(assembel.at(1))!=table_variable_assembly.end() || isNumber(assembel.at(1)))
+                                    if(table_variable[assembel.at(0)]%4 == 0)
                                     {
-                                        if(table_variable_assembly.find(assembel.at(1))!=table_variable_assembly.end())
-                                            instruction.set_address(table_variable_assembly[assembel.at(1)]);
+                                        instruction->set_instruction(table_variable[assembel.at(0)]);
+                                        instruction->set_i(false);
+                                        instruction->set_write(true);
+                                        if(table_variable_assembly.find(assembel.at(1))!=table_variable_assembly.end() || isNumber(assembel.at(1)))
+                                        {
+                                            if(table_variable_assembly.find(assembel.at(1))!=table_variable_assembly.end())
+                                                instruction->set_address(table_variable_assembly[assembel.at(1)]);
+                                            else
+                                            {
+                                                bool ok=1;
+                                                address=assembel.at(1).toInt(&ok,16);
+                                                table_variable_ins[table_variable[assembel.at(0)]] = assembel.at(0);
+                                                instruction->set_address(address);
+                                            }
+                                        }
                                         else
                                         {
-                                            bool ok=1;
-                                            address=assembel.at(1).toInt(&ok,16);
-                                            instruction.set_address(address);
+                                            ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The address must either be a hex number or its label must be available in the program. \n");
+                                            error = 1;
+                                            break;
                                         }
+                                        ram_assembly.at(lc1)->set(instruction);
                                     }
                                     else
                                     {
-                                        ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The address must either be a hex number or its label must be available in the program. \n");
+                                        ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n This command is in a location of the micro program memory that you do not have permission to access. \n");
                                         error = 1;
                                         break;
                                     }
-                                    ram_assembly.at(lc1)=instruction;
                                 }
                                 else
                                 {
@@ -1099,11 +1130,21 @@ if(error != 1)
 
                                 if(table_variable[assembel.at(0)] < 64)
                                 {
-                                    instruction.set_instruction(table_variable[assembel.at(0)]);
-                                    instruction.set_i(false);
-                                    instruction.set_write(true);
-                                    instruction.set_address(131);
-                                    ram_assembly.at(lc1)=instruction;
+                                    if(table_variable[assembel.at(0)]%4 == 0)
+                                    {
+                                        instruction->set_instruction(table_variable[assembel.at(0)]);
+                                        instruction->set_i(false);
+                                        instruction->set_write(true);
+                                        instruction->set_address(0);
+                                        table_variable_ins[table_variable[assembel.at(0)]] = assembel.at(0);
+                                        ram_assembly.at(lc1)->set(instruction);
+                                    }
+                                    else
+                                    {
+                                        ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n This command is in a location of the micro program memory that you do not have permission to access. \n");
+                                        error = 1;
+                                        break;
+                                    }
                                 }
                                 else
                                 {
@@ -1126,34 +1167,44 @@ if(error != 1)
 
                                 if(table_variable[assembel.at(0)] <64)
                                 {
-                                    instruction.set_instruction(table_variable[assembel.at(0)]);
-                                    if(assembel.at(2) == "I")
-                                        instruction.set_i(true);
-                                    else
+                                    if(table_variable[assembel.at(0)]%4 == 0)
                                     {
-                                        ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
-                                        error = 1;
-                                        break;
-                                    }
-                                    instruction.set_write(true);
-                                    if(table_variable_assembly.find(assembel.at(1))!=table_variable_assembly.end() || isNumber(assembel.at(1)))
-                                    {
-                                        if(table_variable_assembly.find(assembel.at(1))!=table_variable_assembly.end())
-                                            instruction.set_address(table_variable_assembly[assembel.at(1)]);
+                                        instruction->set_instruction(table_variable[assembel.at(0)]);
+                                        if(assembel.at(2) == "I")
+                                            instruction->set_i(true);
                                         else
                                         {
-                                            bool ok=1;
-                                            address=assembel.at(1).toInt(&ok,16);
-                                            instruction.set_address(address);
+                                            ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
+                                            error = 1;
+                                            break;
                                         }
+                                        instruction->set_write(true);
+                                        if(table_variable_assembly.find(assembel.at(1))!=table_variable_assembly.end() || isNumber(assembel.at(1)))
+                                        {
+                                            if(table_variable_assembly.find(assembel.at(1))!=table_variable_assembly.end())
+                                                instruction->set_address(table_variable_assembly[assembel.at(1)]);
+                                            else
+                                            {
+                                                bool ok=1;
+                                                address=assembel.at(1).toInt(&ok,16);
+                                                instruction->set_address(address);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The address must either be a hex number or its label must be available in the program. \n");
+                                            error = 1;
+                                            break;
+                                        }
+                                        table_variable_ins[table_variable[assembel.at(0)]] = assembel.at(0);
+                                        ram_assembly.at(lc1)->set(instruction);
                                     }
                                     else
                                     {
-                                        ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The address must either be a hex number or its label must be available in the program. \n");
+                                        ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n This command is in a location of the micro program memory that you do not have permission to access. \n");
                                         error = 1;
                                         break;
                                     }
-                                    ram_assembly.at(lc1)=instruction;
                                 }
                                 else
                                 {
@@ -1173,12 +1224,14 @@ if(error != 1)
                 }
             }
         }
+        printrow_ram(lc1);
+        lc1++;
     }
     if(error != 1)
     {
         ui->console->setText("Compilation was successful \n");
     }
-}*/
+}
 
 void MainWindow::on_open_micro_clicked()
 {

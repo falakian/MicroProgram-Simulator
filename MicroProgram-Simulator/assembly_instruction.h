@@ -32,7 +32,29 @@ public:
     {
         this->write=a;
     }
-    assembly_i& operator=(const assembly_i& s)
+    void set(assembly_i *s)
+    {
+        this->write = s->write;
+        this->instruction = s->instruction;
+        this->i = s->i;
+        this->address = s->address;
+    };
+    int get_instruction()
+    {
+        return this->instruction;
+    };
+    int get_address()
+    {
+        return this->get_address();
+    };
+    int get_i()
+    {
+        if(this->i)
+            return 1;
+        else
+            return 0;
+    };
+    /*assembly_i& operator=(const assembly_i& s)
     {
       this->~assembly_i();
       this->write = s.write;
@@ -40,6 +62,6 @@ public:
       this->i = s.i;
       this->address = s.address;
       return *this;
-    }
+    }*/
 };
 #endif // ASSEMBLY_INSTRUCTION_H

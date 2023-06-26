@@ -31,6 +31,7 @@ public:
     ~MainWindow();
     void printTable_RAM();
     void printTable_Microgram();
+    void printrow_ram_micro(int lc);
     void printrow_ram(int lc);
     QString dectohex(int n);
     bool isNumber(const QString& str);
@@ -82,6 +83,7 @@ private:
     QString issaved_micro="";
     QString issaved_assembly="";
     map<QString,int> table_variable;
+    map<int,QString> table_variable_ins;
     map<QString,int> table_variable_assembly;
     map<QString,int> condition;
     map<QString,int> branch;
@@ -91,6 +93,6 @@ private:
     vector<F2> symbol_f2;
     vector<F3> symbol_f3;
     vector<microprogram_i*> ram_micro ;
-    vector<assembly_i> ram_assembly;
+    vector<assembly_i*> ram_assembly;
 };
 #endif // MAINWINDOW_H
