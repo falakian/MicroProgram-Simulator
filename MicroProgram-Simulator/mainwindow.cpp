@@ -92,7 +92,11 @@ MainWindow::MainWindow(QWidget *parent)
     branch["RET"] = 2;
     branch["MAP"] = 3;
     ram_micro.resize(128);
-    ram_assembly.resize(2048);
+    for(int i=0 ; i<128 ; i++)
+    {
+        ram_micro[i] = new microprogram_i();
+    }
+    //ram_assembly.resize(2048);
     setWindowIcon(QIcon(":/new/prefix1/pic/icon.png"));
     ui->save_assembly->setIcon(QIcon(":/new/prefix1/pic/save.png"));
     ui->open_assembly->setIcon(QIcon(":/new/prefix1/pic/open.png"));
@@ -114,8 +118,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->continue_2->setIconSize(QSize(35,35));
     ui->restart->setIconSize(QSize(35,35));
     ui->stop->setIconSize(QSize(35,35));
-    ui->RAM_table->horizontalHeader()->resizeSections(QHeaderView::Interactive);
-    ui->RAM_table->horizontalHeader()->resizeSections(QHeaderView::Interactive);
+    //ui->RAM_table->horizontalHeader()->resizeSections(QHeaderView::Interactive);
+    //ui->Microprogram_table->horizontalHeader()->resizeSections(QHeaderView::Interactive);
     printTable_RAM();
     printTable_Microgram();
 }
@@ -150,17 +154,39 @@ void MainWindow::printTable_Microgram()
         for(int i=0;i<128;i++)
         {
             QString address = QString::number( i, 16 ).toUpper();
-            QTableWidgetItem *itmaddr = new QTableWidgetItem();
-            QTableWidgetItem *itmHex = new QTableWidgetItem();
-            itmaddr->setText(address);
-            itmHex->setText("0000");
+            QTableWidgetItem *itmaddr = new QTableWidgetItem(address);
+            QTableWidgetItem *itmHex = new QTableWidgetItem("00000");
             ui->Microprogram_table->insertRow(i);
             ui->Microprogram_table->setItem(i,0,itmaddr);
             ui->Microprogram_table->setItem(i,7,itmHex);
         }
 };
 
-QString decToHexa(int n)
+void MainWindow::printrow_ram(int lc)
+{
+    ui->Microprogram_table->setItem(lc,1,new QTableWidgetItem(ram_micro.at(lc)->get_f1().get_intersection()));
+    ui->Microprogram_table->setItem(lc,2,new QTableWidgetItem(ram_micro.at(lc)->get_f2().get_intersection()));
+    ui->Microprogram_table->setItem(lc,3,new QTableWidgetItem(ram_micro.at(lc)->get_f3().get_intersection()));
+    ui->Microprogram_table->setItem(lc,4,new QTableWidgetItem(ram_micro.at(lc)->get_cd()));
+    ui->Microprogram_table->setItem(lc,5,new QTableWidgetItem(ram_micro.at(lc)->get_br()));
+    QTableWidgetItem *itAD = new QTableWidgetItem();
+    QTableWidgetItem *itmHex = new QTableWidgetItem();
+    bitset<3> f1_bit((command_f(ram_micro.at(lc)->get_f1().get_intersection() , 0)/4));
+    bitset<3> f2_bit((command_f(ram_micro.at(lc)->get_f2().get_intersection() , 1)/4));
+    bitset<3> f3_bit((command_f(ram_micro.at(lc)->get_f3().get_intersection() , 2)/4));
+    bitset<2> cd_bit(ram_micro.at(lc)->get_int_cd());
+    bitset<2> br_bit(ram_micro.at(lc)->get_int_br());
+    bitset<7> ad_bit(ram_micro.at(lc)->get_address());
+    bitset<20> micro_instruction(string(f1_bit.to_string()+f2_bit.to_string()+f3_bit.to_string()+cd_bit.to_string()+br_bit.to_string()+ad_bit.to_string()));
+    itAD->setText(QString::fromStdString(ad_bit.to_string()));
+    QString hex = dectohex(micro_instruction.to_ulong());
+    itmHex->setText(hex);
+
+    ui->Microprogram_table->setItem(lc,6,itAD);
+    ui->Microprogram_table->setItem(lc,7,itmHex);
+};
+
+QString MainWindow::dectohex(int n)
 {
     // ans string to store hexadecimal number
     QString ans = "";
@@ -400,7 +426,7 @@ void MainWindow::on_pushButton_clicked()
     QStringList riz_f;
     QStringList check1 , check2;
     QStringList riz_f_command;
-    microprogram_i instruction;
+    microprogram_i *instruction = new microprogram_i;
     int com_f , control_f=0;
 if(error !=1)
 {
@@ -420,16 +446,14 @@ if(error !=1)
             lc1=check1.at(1).toInt(&ok,16);
             continue;
         }
-        else
-            lc1++;
         if(tb.text()[0] != '/')
         {
             riz_command = tb.text().split('/', Qt::SkipEmptyParts);
             check2 = riz_command.at(0).split(':', Qt::SkipEmptyParts);
             if(check2.size() == 1)
-                riz_f = riz_command.at(0).split(',' , Qt::SkipEmptyParts);
+                riz_f = check2.at(0).split(',' , Qt::SkipEmptyParts);
             else
-                riz_f = riz_command.at(1).split(',' , Qt::SkipEmptyParts);
+                riz_f = check2.at(1).split(',' , Qt::SkipEmptyParts);
             switch( riz_f.size())
             {
             case 1:
@@ -438,7 +462,7 @@ if(error !=1)
                 {
                     if(isBranch(riz_f_command.at(2)))
                     {
-                        if(riz_f_command.at(2) == "MAP")
+                        if(riz_f_command.at(2) == "MAP" || riz_f_command.at(2) == "RET")
                         {
                             if(riz_f_command.size() > 3)
                             {
@@ -451,24 +475,24 @@ if(error !=1)
                                 com_f = command_f(riz_f_command.at(0) , 0);
                                 if(com_f % 4 == 0)
                                 {
-                                    instruction.set_f1(symbol_f1.at((com_f/4)));
-                                    instruction.set_f2(symbol_f2.at(0));
-                                    instruction.set_f3(symbol_f3.at(0));
+                                    instruction->set_f1(symbol_f1.at((com_f/4)));
+                                    instruction->set_f2(symbol_f2.at(0));
+                                    instruction->set_f3(symbol_f3.at(0));
                                 }
                                 else
                                 {
                                     if(com_f % 4 == 1)
                                     {
-                                        instruction.set_f1(symbol_f1.at(0));
-                                        instruction.set_f2(symbol_f2.at((com_f/4)));
-                                        instruction.set_f3(symbol_f3.at(0));
+                                        instruction->set_f1(symbol_f1.at(0));
+                                        instruction->set_f2(symbol_f2.at((com_f/4)));
+                                        instruction->set_f3(symbol_f3.at(0));
                                     }
                                     else
                                         if(com_f % 4 == 2)
                                         {
-                                            instruction.set_f1(symbol_f1.at(0));
-                                            instruction.set_f2(symbol_f2.at(0));
-                                            instruction.set_f3(symbol_f3.at((com_f/4)));
+                                            instruction->set_f1(symbol_f1.at(0));
+                                            instruction->set_f2(symbol_f2.at(0));
+                                            instruction->set_f3(symbol_f3.at((com_f/4)));
                                         }
                                         else
                                         {
@@ -477,10 +501,10 @@ if(error !=1)
                                             break;
                                         }
                                 }
-                                instruction.set_branch(branch[riz_f_command.at(2)]);
-                                instruction.set_condition(condition[riz_f_command.at(1)]);
-                                instruction.set_write(true);
-                                ram_micro.at(lc1)=instruction;
+                                instruction->set_branch(branch[riz_f_command.at(2)]);
+                                instruction->set_condition(condition[riz_f_command.at(1)]);
+                                instruction->set_write(true);
+                                ram_micro.at(lc1)->set(instruction);
                             }
                         }
                         else
@@ -498,24 +522,24 @@ if(error !=1)
                                     com_f = command_f(riz_f_command.at(0) , 0);
                                     if(com_f % 4 == 0)
                                     {
-                                    instruction.set_f1(symbol_f1.at((com_f/4)));
-                                    instruction.set_f2(symbol_f2.at(0));
-                                    instruction.set_f3(symbol_f3.at(0));
+                                    instruction->set_f1(symbol_f1.at((com_f/4)));
+                                    instruction->set_f2(symbol_f2.at(0));
+                                    instruction->set_f3(symbol_f3.at(0));
                                     }
                                     else
                                     {
                                         if(com_f % 4 == 1)
                                         {
-                                            instruction.set_f1(symbol_f1.at(0));
-                                            instruction.set_f2(symbol_f2.at((com_f/4)));
-                                            instruction.set_f3(symbol_f3.at(0));
+                                            instruction->set_f1(symbol_f1.at(0));
+                                            instruction->set_f2(symbol_f2.at((com_f/4)));
+                                            instruction->set_f3(symbol_f3.at(0));
                                         }
                                         else
                                             if(com_f % 4 == 2)
                                             {
-                                                instruction.set_f1(symbol_f1.at(0));
-                                                instruction.set_f2(symbol_f2.at(0));
-                                                instruction.set_f3(symbol_f3.at((com_f/4)));
+                                                instruction->set_f1(symbol_f1.at(0));
+                                                instruction->set_f2(symbol_f2.at(0));
+                                                instruction->set_f3(symbol_f3.at((com_f/4)));
                                             }
                                             else
                                             {
@@ -523,19 +547,19 @@ if(error !=1)
                                                 error = 1;
                                                 break;
                                             }
-                                        instruction.set_branch(branch[riz_f_command.at(2)]);
-                                        instruction.set_condition(condition[riz_f_command.at(1)]);
-                                        instruction.set_write(true);
-                                        if(riz_f_command.at(3) != "NEXT")
-                                        {
-                                            instruction.set_address(table_variable[riz_f_command.at(3)]);
-                                        }
-                                        else
-                                        {
-                                            instruction.set_address(lc1+1);
-                                        }
-                                        ram_micro.at(lc1)=instruction;
                                     }
+                                    instruction->set_branch(branch[riz_f_command.at(2)]);
+                                    instruction->set_condition(condition[riz_f_command.at(1)]);
+                                    instruction->set_write(true);
+                                    if(riz_f_command.at(3) != "NEXT")
+                                    {
+                                        instruction->set_address(table_variable[riz_f_command.at(3)]);
+                                    }
+                                    else
+                                    {
+                                        instruction->set_address(lc1+1);
+                                    }
+                                    ram_micro.at(lc1)->set(instruction);
                                 }
                                 else
                                 {
@@ -564,15 +588,15 @@ if(error !=1)
                 com_f = command_f(riz_f.at(0) , 0);
                 if(com_f % 4 == 0)
                 {
-                    instruction.set_f1(symbol_f1.at((com_f/4)));
+                    instruction->set_f1(symbol_f1.at((com_f/4)));
                     control_f = 1;
                 }
                 else
                 {
                     if(com_f % 4 == 1)
                     {
-                        instruction.set_f1(symbol_f1.at(0));
-                        instruction.set_f2(symbol_f2.at((com_f/4)));
+                        instruction->set_f1(symbol_f1.at(0));
+                        instruction->set_f2(symbol_f2.at((com_f/4)));
                         control_f = 2;
                     }
                     else
@@ -587,7 +611,7 @@ if(error !=1)
                 {
                     if(isBranch(riz_f_command.at(2)))
                     {
-                        if(riz_f_command.at(2) == "MAP")
+                        if(riz_f_command.at(2) == "MAP" || riz_f_command.at(2) == "RET")
                         {
                             if(riz_f_command.size() > 3)
                             {
@@ -600,20 +624,20 @@ if(error !=1)
                                 com_f = command_f(riz_f_command.at(0) , control_f);
                                 if(com_f % 4 == 1 && control_f == 1)
                                 {
-                                    instruction.set_f2(symbol_f2.at((com_f/4)));
-                                    instruction.set_f3(symbol_f3.at(0));
+                                    instruction->set_f2(symbol_f2.at((com_f/4)));
+                                    instruction->set_f3(symbol_f3.at(0));
                                 }
                                 else
                                     if(com_f % 4 == 2 && control_f == 1)
                                     {
-                                        instruction.set_f2(symbol_f2.at(0));
-                                        instruction.set_f3(symbol_f3.at((com_f/4)));
+                                        instruction->set_f2(symbol_f2.at(0));
+                                        instruction->set_f3(symbol_f3.at((com_f/4)));
                                     }
                                     else
                                     {
                                         if((com_f % 4 == 2 && control_f == 2))
                                         {
-                                            instruction.set_f3(symbol_f3.at((com_f/4)));
+                                            instruction->set_f3(symbol_f3.at((com_f/4)));
                                         }
                                         else
                                         {
@@ -622,10 +646,10 @@ if(error !=1)
                                             break;
                                         }
                                     }
-                                instruction.set_branch(branch[riz_f_command.at(2)]);
-                                instruction.set_condition(condition[riz_f_command.at(1)]);
-                                instruction.set_write(true);
-                                if(instruction.get_f1().get_dec() == instruction.get_f2().get_dec() || instruction.get_f1().get_dec() == instruction.get_f3().get_dec() || instruction.get_f2().get_dec() == instruction.get_f3().get_dec())
+                                instruction->set_branch(branch[riz_f_command.at(2)]);
+                                instruction->set_condition(condition[riz_f_command.at(1)]);
+                                instruction->set_write(true);
+                                if(instruction->get_f1().get_dec() == instruction->get_f2().get_dec() || instruction->get_f1().get_dec() == instruction->get_f3().get_dec() || instruction->get_f2().get_dec() == instruction->get_f3().get_dec())
                                 {
                                     ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
                                     error = 1;
@@ -633,7 +657,7 @@ if(error !=1)
                                 }
                                 else
                                 {
-                                    ram_micro.at(lc1)=instruction;
+                                    ram_micro.at(lc1)->set(instruction);
                                 }
                             }
                         }
@@ -652,21 +676,21 @@ if(error !=1)
                                     com_f = command_f(riz_f_command.at(0) , control_f);
                                     if(com_f % 4 == 1 && control_f == 1)
                                     {
-                                        instruction.set_f2(symbol_f2.at((com_f/4)));
-                                        instruction.set_f3(symbol_f3.at(0));
+                                        instruction->set_f2(symbol_f2.at((com_f/4)));
+                                        instruction->set_f3(symbol_f3.at(0));
                                     }
                                     else
                                     {
                                         if(com_f % 4 == 2 && control_f == 1)
                                         {
-                                            instruction.set_f2(symbol_f2.at(0));
-                                            instruction.set_f3(symbol_f3.at((com_f/4)));
+                                            instruction->set_f2(symbol_f2.at(0));
+                                            instruction->set_f3(symbol_f3.at((com_f/4)));
                                         }
                                         else
                                         {
                                             if((com_f % 4 == 2 && control_f == 2))
                                             {
-                                                instruction.set_f3(symbol_f3.at((com_f/4)));
+                                                instruction->set_f3(symbol_f3.at((com_f/4)));
                                             }
                                             else
                                             {
@@ -676,18 +700,18 @@ if(error !=1)
                                             }
                                         }
                                     }
-                                    instruction.set_branch(branch[riz_f_command.at(2)]);
-                                    instruction.set_condition(condition[riz_f_command.at(1)]);
-                                    instruction.set_write(true);
+                                    instruction->set_branch(branch[riz_f_command.at(2)]);
+                                    instruction->set_condition(condition[riz_f_command.at(1)]);
+                                    instruction->set_write(true);
                                     if(riz_f_command.at(3) != "NEXT")
                                     {
-                                        instruction.set_address(table_variable[riz_f_command.at(3)]);
+                                        instruction->set_address(table_variable[riz_f_command.at(3)]);
                                     }
                                     else
                                     {
-                                        instruction.set_address(lc1+1);
+                                        instruction->set_address(lc1+1);
                                     }
-                                    if(instruction.get_f1().get_dec() == instruction.get_f2().get_dec() || instruction.get_f1().get_dec() == instruction.get_f3().get_dec() || instruction.get_f2().get_dec() == instruction.get_f3().get_dec())
+                                    if(instruction->get_f1().get_dec() == instruction->get_f2().get_dec() || instruction->get_f1().get_dec() == instruction->get_f3().get_dec() || instruction->get_f2().get_dec() == instruction->get_f3().get_dec())
                                     {
                                         ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
                                         error = 1;
@@ -695,7 +719,7 @@ if(error !=1)
                                     }
                                     else
                                     {
-                                        ram_micro.at(lc1)=instruction;
+                                        ram_micro.at(lc1)->set(instruction);
                                     }
                                 }
 
@@ -726,21 +750,21 @@ if(error !=1)
                 com_f = command_f(riz_f.at(0) , 0);
                 if(com_f % 4 == 0)
                 {
-                    instruction.set_f1(symbol_f1.at((com_f/4)));
+                    instruction->set_f1(symbol_f1.at((com_f/4)));
                     com_f = command_f(riz_f.at(1) , 1);
                     if(com_f % 4 == 1)
                     {
-                        instruction.set_f2(symbol_f2.at((com_f/4)));
+                        instruction->set_f2(symbol_f2.at((com_f/4)));
                         riz_f_command=riz_f.at(2).split(' ' , Qt::SkipEmptyParts);
                         com_f = command_f(riz_f_command.at(0) , 1);
                         if(com_f % 4 == 2)
                         {
-                            instruction.set_f3(symbol_f3.at((com_f/4)));
+                            instruction->set_f3(symbol_f3.at((com_f/4)));
                             if(isCondition(riz_f_command.at(1)))
                             {
                                 if(isBranch(riz_f_command.at(2)))
                                 {
-                                    if(riz_f_command.at(2) == "MAP")
+                                    if(riz_f_command.at(2) == "MAP" || riz_f_command.at(2) == "RET")
                                     {
                                         if(riz_f_command.size() > 3)
                                         {
@@ -750,10 +774,10 @@ if(error !=1)
                                         }
                                         else
                                         {
-                                            instruction.set_branch(branch[riz_f_command.at(2)]);
-                                            instruction.set_condition(condition[riz_f_command.at(1)]);
-                                            instruction.set_write(true);
-                                            if(instruction.get_f1().get_dec() == instruction.get_f2().get_dec() || instruction.get_f1().get_dec() == instruction.get_f3().get_dec() || instruction.get_f2().get_dec() == instruction.get_f3().get_dec())
+                                            instruction->set_branch(branch[riz_f_command.at(2)]);
+                                            instruction->set_condition(condition[riz_f_command.at(1)]);
+                                            instruction->set_write(true);
+                                            if(instruction->get_f1().get_dec() == instruction->get_f2().get_dec() || instruction->get_f1().get_dec() == instruction->get_f3().get_dec() || instruction->get_f2().get_dec() == instruction->get_f3().get_dec())
                                             {
                                                 ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
                                                 error = 1;
@@ -761,7 +785,7 @@ if(error !=1)
                                             }
                                             else
                                             {
-                                                ram_micro.at(lc1)=instruction;
+                                                ram_micro.at(lc1)->set(instruction);
                                             }
                                         }
                                     }
@@ -777,18 +801,18 @@ if(error !=1)
                                         {
                                             if(table_variable.find(riz_f_command.at(3))!=table_variable.end() || riz_f_command.at(3) == "NEXT")
                                             {
-                                                instruction.set_branch(branch[riz_f_command.at(2)]);
-                                                instruction.set_condition(condition[riz_f_command.at(1)]);
-                                                instruction.set_write(true);
+                                                instruction->set_branch(branch[riz_f_command.at(2)]);
+                                                instruction->set_condition(condition[riz_f_command.at(1)]);
+                                                instruction->set_write(true);
                                                 if(riz_f_command.at(3) != "NEXT")
                                                 {
-                                                    instruction.set_address(table_variable[riz_f_command.at(3)]);
+                                                    instruction->set_address(table_variable[riz_f_command.at(3)]);
                                                 }
                                                 else
                                                 {
-                                                    instruction.set_address(lc1+1);
+                                                    instruction->set_address(lc1+1);
                                                 }
-                                                if(instruction.get_f1().get_dec() == instruction.get_f2().get_dec() || instruction.get_f1().get_dec() == instruction.get_f3().get_dec() || instruction.get_f2().get_dec() == instruction.get_f3().get_dec())
+                                                if(instruction->get_f1().get_dec() == instruction->get_f2().get_dec() || instruction->get_f1().get_dec() == instruction->get_f3().get_dec() || instruction->get_f2().get_dec() == instruction->get_f3().get_dec())
                                                 {
                                                     ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
                                                     error = 1;
@@ -796,7 +820,7 @@ if(error !=1)
                                                 }
                                                 else
                                                 {
-                                                    ram_micro.at(lc1)=instruction;
+                                                    ram_micro.at(lc1)->set(instruction);
                                                 }
                                             }
 
@@ -855,21 +879,8 @@ if(error !=1)
                 break;
             else
             {
-                QTableWidgetItem *itF1 = new QTableWidgetItem();
-                QTableWidgetItem *itF2 = new QTableWidgetItem();
-                QTableWidgetItem *itF3 = new QTableWidgetItem();
-                QTableWidgetItem *itCD = new QTableWidgetItem();
-                QTableWidgetItem *itBR = new QTableWidgetItem();
-                QTableWidgetItem *itAD = new QTableWidgetItem();
-                QTableWidgetItem *itmHex = new QTableWidgetItem();
-                itF1->setText(ram_micro.at(lc1).get_f1().get_intersection());
-                itF2->setText(ram_micro.at(lc1).get_f2().get_intersection());
-                itF3->setText(ram_micro.at(lc1).get_f3().get_intersection());
-                itCD->setText(ram_micro.at(lc1).get_cd());
-                itBR->setText(ram_micro.at(lc1).get_br());
-                itAD->setText(decToHexa(ram_micro.at(lc1).get_address()));
-
-                ui->Microprogram_table->setItem(i,7,itmHex);
+                printrow_ram(lc1);
+                lc1++;
             }
         }
     }
@@ -877,11 +888,11 @@ if(error !=1)
 if(error != 1)
 {
     ui->console->setText("Microprogram was compiled successfully \n");
-     compile_assembly();
+     //compile_assembly();
 }
 }
 
-void MainWindow::compile_assembly()
+/*void MainWindow::compile_assembly()
 {
     tcommmands = ui->assembly->document()->blockCount();
     QTextDocument *doc = ui->assembly->document();
@@ -1167,7 +1178,7 @@ void MainWindow::compile_assembly()
     {
         ui->console->setText("Compilation was successful \n");
     }
-}
+}*/
 
 void MainWindow::on_open_micro_clicked()
 {

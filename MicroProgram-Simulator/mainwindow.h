@@ -7,9 +7,10 @@
 #include <vector>
 #include <QTextBlock>
 #include <QFileDialog>
-#include<fstream>
-#include<sstream>
+#include <fstream>
+#include <sstream>
 #include <QFile>
+#include <bitset>
 #include "instruction_f1.h"
 #include "instruction_f2.h"
 #include "instruction_f3.h"
@@ -30,6 +31,8 @@ public:
     ~MainWindow();
     void printTable_RAM();
     void printTable_Microgram();
+    void printrow_ram(int lc);
+    QString dectohex(int n);
     bool isNumber(const QString& str);
     bool isCondition(const QString& str);
     bool isBranch(const QString& str);
@@ -87,7 +90,7 @@ private:
     vector<F1> symbol_f1;
     vector<F2> symbol_f2;
     vector<F3> symbol_f3;
-    vector<microprogram_i> ram_micro;
+    vector<microprogram_i*> ram_micro ;
     vector<assembly_i> ram_assembly;
 };
 #endif // MAINWINDOW_H
