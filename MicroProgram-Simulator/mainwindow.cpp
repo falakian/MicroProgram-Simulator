@@ -249,6 +249,17 @@ bitset<16> MainWindow::bitsetAdd(bitset<16>& x, bitset<16>& y)
     return ans;
 }
 
+bitset<7> MainWindow::bitsetAdd_7bit(bitset<7>& x, bitset<7>& y)
+{
+    bool carry = false;
+    // bitset to store the sum of the two bitsets
+    bitset<7> ans;
+    for (int i = 0; i < 7; i++) {
+        ans[i] = fullAdder(x[i], y[i], carry);
+    }
+    return ans;
+}
+
 
 QString MainWindow::dectohex(int n)
 {
@@ -328,6 +339,20 @@ bitset<4> MainWindow::opcode( bitset<16> a)
     {
         res[k-11] = a[k];
     }
+    return res;
+};
+
+bitset<7> MainWindow::maping( bitset<16> a)
+{
+    bitset<1> z(0);
+    bitset<7> res;
+    res[0] = z[0];
+    res[1] = z[0];
+    res[6] = z[0];
+    res[2] = a[11];
+    res[3] = a[12];
+    res[4] = a[13];
+    res[5] = a[14];
     return res;
 };
 
@@ -1504,15 +1529,22 @@ void MainWindow::on_actionabout_project_triggered()
     msgBox.exec();
 };
 
-void  MainWindow::run_instruction_microprogram(int l)
+int  MainWindow::run_instruction_microprogram(int l , bool id)
 {
+    if(!ram_micro.at(l)->get_write())
+    {
+        ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n It refers to the empty house of memory. \n");
+        return -1 ;
+    }
     bitset<11> AR_T=AR;
     bitset<16> DR_T=DR;
     bitset<16> AC_T=AC;
     bitset<11> PC_T=PC;
     bitset<7> SBR_T=SBR;
     bitset<7> CAR_T=CAR;
+    bitset<7> AD_T(ram_micro.at(l)->get_address());
     bitset<16> inc(1);
+    bitset<7> inccar(1);
     bitset<16> XOR(string("1111111111111111"));
     if(ram_micro.at(l)->get_f1().get_intersection() == "ADD")
         AC_T = bitsetAdd(AC, DR);
@@ -1546,13 +1578,14 @@ void  MainWindow::run_instruction_microprogram(int l)
                                 ram_assembly.at(line)->set_i(i);
                                 ram_assembly.at(line)->set_instruction(ins);
                                 ram_assembly.at(line)->set_write(true);
+                                printrow_ram(line);
                             }
                             else
                             {
                                 if(ram_micro.at(l)->get_f1().get_intersection() != "NOP")
                                 {
                                     ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n The f1 command was not recognized. \n");
-                                    return;
+                                    return -1 ;
                                 }
                             }
     if(ram_micro.at(l)->get_f2().get_intersection() == "SUB")
@@ -1578,7 +1611,7 @@ void  MainWindow::run_instruction_microprogram(int l)
                     else
                     {
                         ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n You want to read the contents of the empty memory house. \n");
-                        return;
+                        return -1;
                     }
                 }
                 else
@@ -1595,7 +1628,7 @@ void  MainWindow::run_instruction_microprogram(int l)
                                 if(ram_micro.at(l)->get_f2().get_intersection() != "NOP")
                                 {
                                     ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n The f2 command was not recognized. \n");
-                                    return;
+                                    return -1;
                                 }
                             }
     if(ram_micro.at(l)->get_f3().get_intersection() == "XOR")
@@ -1620,8 +1653,53 @@ void  MainWindow::run_instruction_microprogram(int l)
                             if(ram_micro.at(l)->get_f3().get_intersection() != "NOP")
                             {
                                 ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n The f3 command was not recognized. \n");
-                                return;
+                                return -1;
                             }
                         }
+    if((ram_micro.at(l)->get_int_cd() == 1 && id) || (ram_micro.at(l)->get_int_cd() == 0) || (ram_micro.at(l)->get_int_cd() == 2 && AC[15] == inc[0]) || (ram_micro.at(l)->get_int_cd() == 3 && AC.to_ulong() == 0) )
+    {
+        if(ram_micro.at(l)->get_int_br() == 0 )
+        {
+            CAR_T = AD_T ;
+        }
+        else
+        {
+            if(ram_micro.at(l)->get_int_br() == 1)
+            {
+                CAR_T = AD_T;
+                SBR_T = bitsetAdd_7bit(CAR , inccar);
+            }
+            else
+            {
+                if(ram_micro.at(l)->get_int_br() == 2)
+                {
+                    CAR_T = SBR;
+                }
+                else
+                {
+                    if(ram_micro.at(l)->get_int_br() == 3)
+                    {
+                        CAR_T = maping(DR);
+                    }
+                    else
+                    {
+                        ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n branch is wrong. \n");
+                        return -1;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        CAR_T = bitsetAdd_7bit(CAR , inccar);
+    }
+    AR=AR_T;
+    DR=DR_T;
+    AC=AC_T;
+    PC=PC_T;
+    SBR=SBR_T;
+    CAR=CAR_T;
+    return 0;
+};
 
-}

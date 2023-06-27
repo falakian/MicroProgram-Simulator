@@ -38,16 +38,17 @@ public:
     bool isCondition(const QString& str);
     bool isBranch(const QString& str);
     int command_f(QString command , int check);
-    void run_instruction_microprogram(int l);
+    int run_instruction_microprogram(int l , bool i);
     bool fullSubtractor(bool b1, bool b2, bool& borrow);
     bitset<16> bitsetSubtract(bitset<16> x, bitset<16> y);
     bool fullAdder(bool b1, bool b2, bool& carry);
+    bitset<7>bitsetAdd_7bit(bitset<7>& x, bitset<7>& y);
     bitset<16> bitsetAdd(bitset<16>& x, bitset<16>& y);
     bitset<11> bit_16_to_11( bitset<16> a);
     bitset<16>bit_11_to_16( bitset<11> a);
     bitset<11> incpc(bitset<11> a);
     bitset<4> opcode( bitset<16> a);
-
+    bitset<7> maping( bitset<16> a);
 protected:
     void compile_assembly();
 
