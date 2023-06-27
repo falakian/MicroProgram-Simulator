@@ -54,6 +54,10 @@ public:
         else
             return 0;
     };
+    bool get_write()
+    {
+       return this->write;
+    };
     /*assembly_i& operator=(const assembly_i& s)
     {
       this->~assembly_i();

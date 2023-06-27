@@ -38,6 +38,16 @@ public:
     bool isCondition(const QString& str);
     bool isBranch(const QString& str);
     int command_f(QString command , int check);
+    void run_instruction_microprogram(int l);
+    bool fullSubtractor(bool b1, bool b2, bool& borrow);
+    bitset<16> bitsetSubtract(bitset<16> x, bitset<16> y);
+    bool fullAdder(bool b1, bool b2, bool& carry);
+    bitset<16> bitsetAdd(bitset<16>& x, bitset<16>& y);
+    bitset<11> bit_16_to_11( bitset<16> a);
+    bitset<16>bit_11_to_16( bitset<11> a);
+    bitset<11> incpc(bitset<11> a);
+    bitset<4> opcode( bitset<16> a);
+
 protected:
     void compile_assembly();
 
@@ -87,7 +97,12 @@ private:
     map<QString,int> table_variable_assembly;
     map<QString,int> condition;
     map<QString,int> branch;
-    //QStringList commands;
+    bitset<11> AR;
+    bitset<16> DR;
+    bitset<16> AC;
+    bitset<11> PC;
+    bitset<7> SBR;
+    bitset<7> CAR;
     int tcommmands;
     vector<F1> symbol_f1;
     vector<F2> symbol_f2;

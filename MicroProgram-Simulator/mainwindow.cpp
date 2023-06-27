@@ -206,6 +206,50 @@ void MainWindow::printrow_ram(int lc)
 
 };
 
+bool MainWindow::fullSubtractor(bool b1, bool b2, bool& borrow)
+{
+    bool diff;
+    if (borrow) {
+        diff = !(b1 ^ b2);
+        borrow = !b1 || (b1 && b2);
+    }
+    else {
+        diff = b1 ^ b2;
+        borrow = !b1 && b2;
+    }
+    return diff;
+}
+// Function to calculate difference between two bitsets
+bitset<16> MainWindow::bitsetSubtract(bitset<16> x, bitset<16> y)
+{
+    bool borrow = false;
+    // bitset to store the sum of the two bitsets
+    bitset<16> ans;
+    for (int i = 0; i < 16; i++) {
+        ans[i] = fullSubtractor(x[i], y[i], borrow);
+    }
+    return ans;
+}
+
+bool MainWindow::fullAdder(bool b1, bool b2, bool& carry)
+{
+    bool sum = (b1 ^ b2) ^ carry;
+    carry = (b1 && b2) || (b1 && carry) || (b2 && carry);
+    return sum;
+}
+// Function to add two bitsets
+bitset<16> MainWindow::bitsetAdd(bitset<16>& x, bitset<16>& y)
+{
+    bool carry = false;
+    // bitset to store the sum of the two bitsets
+    bitset<16> ans;
+    for (int i = 0; i < 16; i++) {
+        ans[i] = fullAdder(x[i], y[i], carry);
+    }
+    return ans;
+}
+
+
 QString MainWindow::dectohex(int n)
 {
     // ans string to store hexadecimal number
@@ -242,6 +286,49 @@ QString MainWindow::dectohex(int n)
       j--;
     }
     return ans;
+};
+
+bitset<11> MainWindow::bit_16_to_11( bitset<16> a)
+{
+    bitset<11> res;
+    for(int k=0; k<11; k++)
+    {
+        res[k] = a[k];
+    }
+    return res;
+};
+
+bitset<16> MainWindow::bit_11_to_16( bitset<11> a)
+{
+    bitset<16> res(0);
+    for(int k=0; k<11; k++)
+    {
+        res[k] = a[k];
+    }
+    return res;
+};
+
+bitset<11> MainWindow::incpc(bitset<11> a)
+{
+
+    bool carry = false;
+    // bitset to store the sum of the two bitsets
+    bitset<11> y(string("00000000001"));
+    bitset<11> ans;
+    for (int i = 0; i < 11; i++) {
+        ans[i] = fullAdder(a[i], y[i], carry);
+    }
+    return ans;
+};
+
+bitset<4> MainWindow::opcode( bitset<16> a)
+{
+    bitset<4> res;
+    for(int k=11; k<15; k++)
+    {
+        res[k-11] = a[k];
+    }
+    return res;
 };
 
 bool MainWindow::isNumber(const QString &str)
@@ -1231,7 +1318,7 @@ void MainWindow::compile_assembly()
     {
         ui->console->setText("Compilation was successful \n");
     }
-}
+};
 
 void MainWindow::on_open_micro_clicked()
 {
@@ -1251,7 +1338,7 @@ void MainWindow::on_open_micro_clicked()
             ui->Microprogram->insertPlainText("\n");
         }
     }
-}
+};
 
 
 
@@ -1271,7 +1358,7 @@ void MainWindow::on_save_micro_clicked()
         f.close();
 
     }
-}
+};
 
 
 void MainWindow::on_actionsave_as_microprogram_triggered()
@@ -1289,14 +1376,14 @@ void MainWindow::on_actionsave_as_microprogram_triggered()
 
         issaved_micro=fileName;
     }
-}
+};
 
 
 void MainWindow::on_new_micro_clicked()
 {
     ui->Microprogram->clear();
     issaved_micro="";
-}
+};
 
 
 void MainWindow::on_save_assembly_clicked()
@@ -1314,19 +1401,19 @@ void MainWindow::on_save_assembly_clicked()
         f.close();
 
     }
-}
+};
 
 
 void MainWindow::on_actionsave_microprogram_triggered()
 {
     on_save_micro_clicked();
-}
+};
 
 
 void MainWindow::on_actionopen_microprogram_triggered()
 {
     on_open_micro_clicked();
-}
+};
 
 
 void MainWindow::on_actionsave_as_assembly_code_triggered()
@@ -1343,43 +1430,43 @@ void MainWindow::on_actionsave_as_assembly_code_triggered()
 
         issaved_assembly=fileName;
     }
-}
+};
 
 
 void MainWindow::on_actionsave_assembly_code_triggered()
 {
     on_save_assembly_clicked();
-}
+};
 
 
 void MainWindow::on_actionopen_assembly_code_triggered()
 {
     on_open_assembly_clicked();
-}
+};
 
 
 void MainWindow::on_actionnew_assembly_code_triggered()
 {
     on_new_assembly_clicked();
-}
+};
 
 
 void MainWindow::on_actionnew_microprogram_triggered()
 {
     on_new_micro_clicked();
-}
+};
 
 
 void MainWindow::on_actionexit_triggered()
 {
     this->close();
-}
+};
 
 
 void MainWindow::on_actioncompile_triggered()
 {
     on_pushButton_clicked();
-}
+};
 
 
 void MainWindow::on_open_assembly_clicked()
@@ -1400,14 +1487,14 @@ void MainWindow::on_open_assembly_clicked()
             ui->assembly->insertPlainText("\n");
         }
     }
-}
+};
 
 
 void MainWindow::on_new_assembly_clicked()
 {
     ui->assembly->clear();
     issaved_assembly="";
-}
+};
 
 
 void MainWindow::on_actionabout_project_triggered()
@@ -1415,5 +1502,126 @@ void MainWindow::on_actionabout_project_triggered()
     QMessageBox msgBox;
     msgBox.setText("An assembler and hardware simulator for the Mano Basic Computer, a 16 bit computer.\n Programming By: Alireza Falakian \n GitHub link 🔗: https://github.com/falakian/MicroProgram-Simulator");
     msgBox.exec();
-}
+};
 
+void  MainWindow::run_instruction_microprogram(int l)
+{
+    bitset<11> AR_T=AR;
+    bitset<16> DR_T=DR;
+    bitset<16> AC_T=AC;
+    bitset<11> PC_T=PC;
+    bitset<7> SBR_T=SBR;
+    bitset<7> CAR_T=CAR;
+    bitset<16> inc(1);
+    bitset<16> XOR(string("1111111111111111"));
+    if(ram_micro.at(l)->get_f1().get_intersection() == "ADD")
+        AC_T = bitsetAdd(AC, DR);
+    else
+        if(ram_micro.at(l)->get_f1().get_intersection() == "CLRAC")
+            AC_T.reset() ;
+        else
+            if(ram_micro.at(l)->get_f1().get_intersection() == "INCAC")
+                AC_T = bitsetAdd(AC, inc);
+            else
+                if(ram_micro.at(l)->get_f1().get_intersection() == "DRTAC")
+                    AC_T = DR ;
+                else
+                    if(ram_micro.at(l)->get_f1().get_intersection() == "DRTAR")
+                        AR_T = bit_16_to_11(DR);
+                    else
+                        if(ram_micro.at(l)->get_f1().get_intersection() == "PCTAR")
+                            AR_T = PC;
+                        else
+                            if(ram_micro.at(l)->get_f1().get_intersection() == "WRITE")
+                            {
+                                int address = bit_16_to_11(DR).to_ulong();
+                                bool i;
+                                if(DR[15] == 0)
+                                    i = false;
+                                else
+                                    i = true;
+                                int ins = opcode(DR).to_ulong();
+                                int line = AR.to_ulong();
+                                ram_assembly.at(line)->set_address(address);
+                                ram_assembly.at(line)->set_i(i);
+                                ram_assembly.at(line)->set_instruction(ins);
+                                ram_assembly.at(line)->set_write(true);
+                            }
+                            else
+                            {
+                                if(ram_micro.at(l)->get_f1().get_intersection() != "NOP")
+                                {
+                                    ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n The f1 command was not recognized. \n");
+                                    return;
+                                }
+                            }
+    if(ram_micro.at(l)->get_f2().get_intersection() == "SUB")
+        AC_T = bitsetSubtract(AC , DR);
+    else
+        if(ram_micro.at(l)->get_f2().get_intersection() == "OR")
+           AC_T = AC | DR ;
+        else
+            if(ram_micro.at(l)->get_f2().get_intersection() == "AND")
+                AC_T = AC & DR;
+            else
+                if(ram_micro.at(l)->get_f2().get_intersection() == "READ")
+                {
+                    int line = AR.to_ulong();
+                    if(ram_assembly.at(line)->get_write())
+                    {
+                        bitset<1> i_bit(ram_assembly.at(line)->get_i());
+                        bitset<4> ins_bit(ram_assembly.at(line)->get_instruction());
+                        bitset<11> ad_bit(ram_assembly.at(line)->get_address());
+                        bitset<16> micro_instruction(string(i_bit.to_string()+ins_bit.to_string()+ad_bit.to_string()));
+                        DR_T = micro_instruction;
+                    }
+                    else
+                    {
+                        ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n You want to read the contents of the empty memory house. \n");
+                        return;
+                    }
+                }
+                else
+                    if(ram_micro.at(l)->get_f2().get_intersection() == "ACTDR")
+                        DR_T = AC ;
+                    else
+                        if(ram_micro.at(l)->get_f2().get_intersection() == "INCDR")
+                            DR_T = bitsetAdd(DR, inc);
+                        else
+                            if(ram_micro.at(l)->get_f2().get_intersection() == "PCTDR")
+                                DR_T = bit_11_to_16(PC);
+                            else
+                            {
+                                if(ram_micro.at(l)->get_f2().get_intersection() != "NOP")
+                                {
+                                    ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n The f2 command was not recognized. \n");
+                                    return;
+                                }
+                            }
+    if(ram_micro.at(l)->get_f3().get_intersection() == "XOR")
+        AC_T = AC ^ DR;
+    else
+        if(ram_micro.at(l)->get_f3().get_intersection() == "COM")
+            AC_T = AC ^ XOR;
+        else
+            if(ram_micro.at(l)->get_f3().get_intersection() == "SHL")
+                AC_T = AC <<= 1 ;
+            else
+                if(ram_micro.at(l)->get_f3().get_intersection() == "SHR")
+                    AC_T = AC >>= 1 ;
+                else
+                    if(ram_micro.at(l)->get_f3().get_intersection() == "INCPC")
+                        PC_T = incpc(PC);
+                    else
+                        if(ram_micro.at(l)->get_f3().get_intersection() == "ARTPC")
+                            PC_T = AR ;
+                        else
+                        {
+                            if(ram_micro.at(l)->get_f3().get_intersection() != "NOP")
+                            {
+                                ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n The f3 command was not recognized. \n");
+                                return;
+                            }
+                        }
+
+}
