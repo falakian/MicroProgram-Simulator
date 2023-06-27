@@ -123,6 +123,10 @@ public:
     {
         return this->address;
     };
+    bool get_write()
+    {
+        return this->write;
+    };
     void set(microprogram_i *s)
     {
         this->write = s->write;

@@ -11,6 +11,7 @@
 #include <sstream>
 #include <QFile>
 #include <bitset>
+#include <QScrollBar>
 #include "instruction_f1.h"
 #include "instruction_f2.h"
 #include "instruction_f3.h"
@@ -49,6 +50,7 @@ public:
     bitset<11> incpc(bitset<11> a);
     bitset<4> opcode( bitset<16> a);
     bitset<7> maping( bitset<16> a);
+    void run_instruction();
 protected:
     void compile_assembly();
 
@@ -88,6 +90,9 @@ private slots:
     void on_new_assembly_clicked();
 
     void on_actionabout_project_triggered();
+
+    void on_Microprogram_blockCountChanged(int newBlockCount);
+
 
 private:
     Ui::MainWindow *ui;

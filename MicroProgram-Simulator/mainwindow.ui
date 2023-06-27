@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1490</width>
+    <width>1513</width>
     <height>700</height>
    </rect>
   </property>
@@ -37,26 +37,12 @@ border-color: rgb(0, 0, 0);
    <property name="enabled">
     <bool>true</bool>
    </property>
-   <widget class="QListView" name="listView">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>60</y>
-      <width>381</width>
-      <height>231</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(57, 62, 70);
-border-color: transparent;</string>
-    </property>
-   </widget>
    <widget class="QListView" name="listView_2">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>350</y>
-      <width>381</width>
+      <width>421</width>
       <height>281</height>
      </rect>
     </property>
@@ -70,7 +56,7 @@ border-color: transparent;</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>510</x>
       <y>290</y>
       <width>271</width>
       <height>31</height>
@@ -89,7 +75,7 @@ border-color: transparent;</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>510</x>
       <y>340</y>
       <width>271</width>
       <height>31</height>
@@ -108,7 +94,7 @@ border-color: transparent;</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>510</x>
       <y>390</y>
       <width>271</width>
       <height>31</height>
@@ -127,7 +113,7 @@ border-color: transparent;</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>510</x>
       <y>440</y>
       <width>271</width>
       <height>31</height>
@@ -146,7 +132,7 @@ border-color: transparent;</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>410</x>
+      <x>450</x>
       <y>510</y>
       <width>341</width>
       <height>121</height>
@@ -170,7 +156,7 @@ color: rgb(255, 0, 0);
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>470</x>
       <y>290</y>
       <width>21</width>
       <height>20</height>
@@ -183,7 +169,7 @@ color: rgb(255, 0, 0);
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>470</x>
       <y>340</y>
       <width>21</width>
       <height>20</height>
@@ -196,7 +182,7 @@ color: rgb(255, 0, 0);
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>470</x>
       <y>390</y>
       <width>21</width>
       <height>20</height>
@@ -209,7 +195,7 @@ color: rgb(255, 0, 0);
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>470</x>
       <y>440</y>
       <width>31</width>
       <height>20</height>
@@ -222,7 +208,7 @@ color: rgb(255, 0, 0);
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>460</x>
       <y>480</y>
       <width>101</width>
       <height>20</height>
@@ -241,7 +227,7 @@ color: rgb(255, 0, 0);
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>440</x>
       <y>60</y>
       <width>111</width>
       <height>41</height>
@@ -268,7 +254,7 @@ color: rgb(255, 255, 255);
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>560</x>
       <y>60</y>
       <width>111</width>
       <height>41</height>
@@ -295,7 +281,7 @@ color: rgb(255, 255, 255);
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>640</x>
+      <x>680</x>
       <y>60</y>
       <width>111</width>
       <height>41</height>
@@ -322,7 +308,7 @@ color: rgb(255, 255, 255);
    <widget class="QPushButton" name="next_step">
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>560</x>
       <y>10</y>
       <width>51</width>
       <height>41</height>
@@ -347,7 +333,7 @@ color: rgb(255, 255, 255);
    <widget class="QPushButton" name="restart">
     <property name="geometry">
      <rect>
-      <x>580</x>
+      <x>620</x>
       <y>10</y>
       <width>51</width>
       <height>41</height>
@@ -369,7 +355,7 @@ color: rgb(255, 255, 255);
    <widget class="QPushButton" name="continue_2">
     <property name="geometry">
      <rect>
-      <x>640</x>
+      <x>680</x>
       <y>10</y>
       <width>51</width>
       <height>41</height>
@@ -391,7 +377,7 @@ color: rgb(255, 255, 255);
    <widget class="QPushButton" name="stop">
     <property name="geometry">
      <rect>
-      <x>700</x>
+      <x>740</x>
       <y>10</y>
       <width>51</width>
       <height>41</height>
@@ -416,7 +402,7 @@ color: rgb(255, 255, 255);
     </property>
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>50</x>
       <y>60</y>
       <width>381</width>
       <height>231</height>
@@ -446,7 +432,7 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>50</x>
       <y>350</y>
       <width>381</width>
       <height>281</height>
@@ -462,7 +448,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>30</y>
       <width>131</width>
       <height>20</height>
@@ -481,7 +467,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>320</y>
       <width>131</width>
       <height>20</height>
@@ -500,7 +486,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
-      <x>810</x>
+      <x>850</x>
       <y>30</y>
       <width>63</width>
       <height>20</height>
@@ -519,7 +505,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QPushButton" name="new_assembly">
     <property name="geometry">
      <rect>
-      <x>340</x>
+      <x>380</x>
       <y>300</y>
       <width>51</width>
       <height>41</height>
@@ -541,7 +527,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QPushButton" name="open_assembly">
     <property name="geometry">
      <rect>
-      <x>280</x>
+      <x>320</x>
       <y>300</y>
       <width>51</width>
       <height>41</height>
@@ -563,7 +549,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QPushButton" name="save_assembly">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>260</x>
       <y>300</y>
       <width>51</width>
       <height>41</height>
@@ -585,7 +571,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QPushButton" name="save_micro">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>260</x>
       <y>10</y>
       <width>51</width>
       <height>41</height>
@@ -607,7 +593,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QPushButton" name="new_micro">
     <property name="geometry">
      <rect>
-      <x>340</x>
+      <x>380</x>
       <y>10</y>
       <width>51</width>
       <height>41</height>
@@ -629,7 +615,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QPushButton" name="open_micro">
     <property name="geometry">
      <rect>
-      <x>280</x>
+      <x>320</x>
       <y>10</y>
       <width>51</width>
       <height>41</height>
@@ -654,7 +640,7 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>630</x>
+      <x>670</x>
       <y>240</y>
       <width>111</width>
       <height>31</height>
@@ -673,7 +659,7 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>510</x>
       <y>240</y>
       <width>111</width>
       <height>31</height>
@@ -689,7 +675,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QLabel" name="label_9">
     <property name="geometry">
      <rect>
-      <x>590</x>
+      <x>630</x>
       <y>240</y>
       <width>31</width>
       <height>20</height>
@@ -702,7 +688,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QLabel" name="label_10">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>470</x>
       <y>240</y>
       <width>31</width>
       <height>20</height>
@@ -718,7 +704,7 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>640</x>
+      <x>680</x>
       <y>160</y>
       <width>111</width>
       <height>51</height>
@@ -737,7 +723,7 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>560</x>
       <y>160</y>
       <width>111</width>
       <height>51</height>
@@ -756,7 +742,7 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>440</x>
       <y>160</y>
       <width>111</width>
       <height>51</height>
@@ -772,7 +758,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QLabel" name="label_11">
     <property name="geometry">
      <rect>
-      <x>440</x>
+      <x>480</x>
       <y>120</y>
       <width>31</width>
       <height>31</height>
@@ -790,7 +776,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QLabel" name="label_12">
     <property name="geometry">
      <rect>
-      <x>560</x>
+      <x>600</x>
       <y>120</y>
       <width>31</width>
       <height>31</height>
@@ -808,7 +794,7 @@ color: rgb(255, 255, 255);</string>
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>680</x>
+      <x>720</x>
       <y>120</y>
       <width>31</width>
       <height>31</height>
@@ -829,7 +815,7 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>760</x>
+      <x>800</x>
       <y>60</y>
       <width>212</width>
       <height>571</height>
@@ -1148,7 +1134,7 @@ selection-background-color:  rgb(37, 40, 45);
     </property>
     <property name="geometry">
      <rect>
-      <x>980</x>
+      <x>1020</x>
       <y>60</y>
       <width>483</width>
       <height>571</height>
@@ -1477,13 +1463,124 @@ selection-background-color:  rgb(37, 40, 45);
      </property>
     </column>
    </widget>
+   <widget class="QTableWidget" name="micro_number">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>421</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(57, 62, 70);
+selection-background-color:  rgb(37, 40, 45);
+color: rgb(0, 0, 0);
+</string>
+    </property>
+    <property name="tabKeyNavigation">
+     <bool>false</bool>
+    </property>
+    <property name="dragDropOverwriteMode">
+     <bool>true</bool>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::SingleSelection</enum>
+    </property>
+    <property name="selectionBehavior">
+     <enum>QAbstractItemView::SelectRows</enum>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>40</number>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>40</number>
+    </attribute>
+    <attribute name="horizontalHeaderHighlightSections">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>32</number>
+    </attribute>
+    <attribute name="verticalHeaderHighlightSections">
+     <bool>false</bool>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>n</string>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>17</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignLeading|AlignVCenter</set>
+     </property>
+    </column>
+   </widget>
+   <zorder>micro_number</zorder>
+   <zorder>listView_2</zorder>
+   <zorder>lineEdit</zorder>
+   <zorder>lineEdit_2</zorder>
+   <zorder>lineEdit_3</zorder>
+   <zorder>lineEdit_4</zorder>
+   <zorder>console</zorder>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label_3</zorder>
+   <zorder>label_4</zorder>
+   <zorder>label_5</zorder>
+   <zorder>pushButton</zorder>
+   <zorder>pushButton_2</zorder>
+   <zorder>pushButton_3</zorder>
+   <zorder>next_step</zorder>
+   <zorder>restart</zorder>
+   <zorder>continue_2</zorder>
+   <zorder>stop</zorder>
+   <zorder>Microprogram</zorder>
+   <zorder>assembly</zorder>
+   <zorder>label_6</zorder>
+   <zorder>label_7</zorder>
+   <zorder>label_8</zorder>
+   <zorder>new_assembly</zorder>
+   <zorder>open_assembly</zorder>
+   <zorder>save_assembly</zorder>
+   <zorder>save_micro</zorder>
+   <zorder>new_micro</zorder>
+   <zorder>open_micro</zorder>
+   <zorder>lineEdit_5</zorder>
+   <zorder>lineEdit_6</zorder>
+   <zorder>label_9</zorder>
+   <zorder>label_10</zorder>
+   <zorder>lineEdit_7</zorder>
+   <zorder>lineEdit_8</zorder>
+   <zorder>lineEdit_9</zorder>
+   <zorder>label_11</zorder>
+   <zorder>label_12</zorder>
+   <zorder>label_13</zorder>
+   <zorder>RAM_table</zorder>
+   <zorder>Microprogram_table</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1490</width>
+     <width>1513</width>
      <height>25</height>
     </rect>
    </property>

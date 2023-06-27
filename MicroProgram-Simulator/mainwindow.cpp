@@ -128,6 +128,18 @@ MainWindow::MainWindow(QWidget *parent)
     printTable_Microgram();
     table_variable_ins[129] = "HEX";
     table_variable_ins[130] = "DEC";
+    bitset<16> zero1(0);
+    bitset<11> zero2(0);
+    bitset<7> zero3(0);
+    bitset<7> fetch(64);
+    AR=zero2;
+    DR=zero1;
+    AC=zero1;
+    PC=zero2;
+    SBR=zero3;
+    CAR=fetch;
+    connect(ui->Microprogram->verticalScrollBar(), &QScrollBar::valueChanged,ui->micro_number->verticalScrollBar(),&QScrollBar::setValue);
+    connect(ui->micro_number->verticalScrollBar(), &QScrollBar::valueChanged,ui->Microprogram->verticalScrollBar(),&QScrollBar::setValue);
 }
 
 
@@ -1702,4 +1714,25 @@ int  MainWindow::run_instruction_microprogram(int l , bool id)
     CAR=CAR_T;
     return 0;
 };
+
+void MainWindow::run_instruction()
+{
+
+};
+
+
+void MainWindow::on_Microprogram_blockCountChanged(int newBlockCount)
+{
+    ui->micro_number->setRowCount(0);
+    ui->micro_number->setColumnCount(1);
+    for(int i=0;i<newBlockCount;i++)
+    {
+        ui->micro_number->insertRow(i);
+        QTableWidgetItem *n = new QTableWidgetItem(QString::number(i+1).toUpper());
+        ui->micro_number->setItem(i,0,n);
+    }
+   ui->micro_number->verticalScrollBar()->setValue(ui->Microprogram->verticalScrollBar()->value());
+};
+
+
 
