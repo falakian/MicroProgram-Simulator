@@ -140,6 +140,8 @@ MainWindow::MainWindow(QWidget *parent)
     CAR=fetch;
     connect(ui->Microprogram->verticalScrollBar(), &QScrollBar::valueChanged,ui->micro_number->verticalScrollBar(),&QScrollBar::setValue);
     connect(ui->micro_number->verticalScrollBar(), &QScrollBar::valueChanged,ui->Microprogram->verticalScrollBar(),&QScrollBar::setValue);
+    connect(ui->assembly->verticalScrollBar(), &QScrollBar::valueChanged,ui->assembel_number->verticalScrollBar(),&QScrollBar::setValue);
+    connect(ui->assembel_number->verticalScrollBar(), &QScrollBar::valueChanged,ui->assembly->verticalScrollBar(),&QScrollBar::setValue);
 }
 
 
@@ -1735,4 +1737,18 @@ void MainWindow::on_Microprogram_blockCountChanged(int newBlockCount)
 };
 
 
+
+
+void MainWindow::on_assembly_blockCountChanged(int newBlockCount)
+{
+    ui->assembel_number->setRowCount(0);
+    ui->assembel_number->setColumnCount(1);
+    for(int i=0;i<newBlockCount;i++)
+    {
+        ui->assembel_number->insertRow(i);
+        QTableWidgetItem *n = new QTableWidgetItem(QString::number(i+1).toUpper());
+        ui->assembel_number->setItem(i,0,n);
+    }
+   ui->assembel_number->verticalScrollBar()->setValue(ui->assembly->verticalScrollBar()->value());
+}
 

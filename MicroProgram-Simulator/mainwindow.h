@@ -94,6 +94,8 @@ private slots:
     void on_Microprogram_blockCountChanged(int newBlockCount);
 
 
+    void on_assembly_blockCountChanged(int newBlockCount);
+
 private:
     Ui::MainWindow *ui;
     QString issaved_micro="";
