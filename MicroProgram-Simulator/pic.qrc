@@ -17,5 +17,6 @@
         <file>pic/continueoff.png</file>
         <file>pic/restartoff.png</file>
         <file>pic/stopoff.png</file>
+        <file>pic/reset.png</file>
     </qresource>
 </RCC>

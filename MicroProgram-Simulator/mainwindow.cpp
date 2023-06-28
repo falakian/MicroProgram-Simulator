@@ -116,6 +116,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stop->setEnabled(false);
     //ui->restart->setIcon(QIcon(":/new/prefix1/pic/restart.png"));
     ui->restart->setEnabled(false);
+    ui->actionrestart->setEnabled(false);
+    ui->actionnext_step->setEnabled(false);
+    ui->actioncontinue->setEnabled(false);
+    ui->actionstop->setEnabled(false);
     ui->save_assembly->setIconSize(QSize(35, 35));
     ui->open_assembly->setIconSize(QSize(35, 35));
     ui->new_assembly->setIconSize(QSize(35, 35));
@@ -1810,6 +1814,10 @@ void MainWindow::run_instruction()
         ui->continue_2->setEnabled(false);
         ui->stop->setEnabled(false);
         ui->restart->setEnabled(false);
+        ui->actionrestart->setEnabled(false);
+        ui->actionnext_step->setEnabled(false);
+        ui->actioncontinue->setEnabled(false);
+        ui->actionstop->setEnabled(false);
         while(true)
             if(PC.to_ulong() - 1 == HLT)
             {
@@ -1889,6 +1897,10 @@ void MainWindow::on_pushButton_4_clicked()
     ui->continue_2->setEnabled(false);
     ui->stop->setEnabled(false);
     ui->restart->setEnabled(false);
+    ui->actionrestart->setEnabled(false);
+    ui->actionnext_step->setEnabled(false);
+    ui->actioncontinue->setEnabled(false);
+    ui->actionstop->setEnabled(false);
     run = 0;
     debug = 0;
     debug_stop = 0;
@@ -1919,6 +1931,10 @@ void MainWindow::on_debug_clicked()
         ui->continue_2->setEnabled(true);
         ui->stop->setEnabled(true);
         ui->restart->setEnabled(true);
+        ui->actionrestart->setEnabled(true);
+        ui->actionnext_step->setEnabled(true);
+        ui->actioncontinue->setEnabled(true);
+        ui->actionstop->setEnabled(true);
     }
     else
     {
@@ -1950,6 +1966,10 @@ void MainWindow::on_next_step_clicked()
                 ui->continue_2->setEnabled(false);
                 ui->stop->setEnabled(false);
                 ui->restart->setEnabled(false);
+                ui->actionrestart->setEnabled(false);
+                ui->actionnext_step->setEnabled(false);
+                ui->actioncontinue->setEnabled(false);
+                ui->actionstop->setEnabled(false);
                 debug = 0;
             }
             else
@@ -1963,6 +1983,10 @@ void MainWindow::on_next_step_clicked()
                     ui->continue_2->setEnabled(false);
                     ui->stop->setEnabled(false);
                     ui->restart->setEnabled(false);
+                    ui->actionrestart->setEnabled(false);
+                    ui->actionnext_step->setEnabled(false);
+                    ui->actioncontinue->setEnabled(false);
+                    ui->actionstop->setEnabled(false);
                 }
             }
     }
@@ -1990,6 +2014,10 @@ void MainWindow::on_restart_clicked()
         ui->continue_2->setEnabled(true);
         ui->stop->setEnabled(true);
         ui->restart->setEnabled(true);
+        ui->actionrestart->setEnabled(true);
+        ui->actionnext_step->setEnabled(true);
+        ui->actioncontinue->setEnabled(true);
+        ui->actionstop->setEnabled(true);
         on_next_step_clicked();
     }
 }
@@ -2013,6 +2041,10 @@ void MainWindow::on_continue_2_clicked()
         ui->continue_2->setEnabled(false);
         ui->stop->setEnabled(false);
         ui->restart->setEnabled(false);
+        ui->actionrestart->setEnabled(false);
+        ui->actionnext_step->setEnabled(false);
+        ui->actioncontinue->setEnabled(false);
+        ui->actionstop->setEnabled(false);
     }
 }
 
@@ -2033,7 +2065,47 @@ void MainWindow::on_stop_clicked()
         ui->continue_2->setEnabled(false);
         ui->stop->setEnabled(false);
         ui->restart->setEnabled(false);
+        ui->actionrestart->setEnabled(false);
+        ui->actionnext_step->setEnabled(false);
+        ui->actioncontinue->setEnabled(false);
+        ui->actionstop->setEnabled(false);
         debug_stop = 1 ;
     }
+}
+
+
+void MainWindow::on_actiondebug_triggered()
+{
+    on_debug_clicked();
+}
+
+
+void MainWindow::on_actionrun_without_debug_triggered()
+{
+    run_instruction();
+}
+
+
+void MainWindow::on_actionnext_step_triggered()
+{
+    on_next_step_clicked();
+}
+
+
+void MainWindow::on_actioncontinue_triggered()
+{
+    on_continue_2_clicked();
+}
+
+
+void MainWindow::on_actionrestart_triggered()
+{
+    on_restart_clicked();
+}
+
+
+void MainWindow::on_actionstop_triggered()
+{
+    on_stop_clicked();
 }
 
