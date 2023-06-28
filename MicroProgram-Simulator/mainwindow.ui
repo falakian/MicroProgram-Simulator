@@ -64,6 +64,9 @@ border-color: rgb(0, 0, 0);
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLineEdit" name="dr">
     <property name="enabled">
@@ -91,6 +94,9 @@ border-color: rgb(0, 0, 0);
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLineEdit" name="ac">
@@ -120,6 +126,9 @@ border-color: rgb(0, 0, 0);
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLineEdit" name="pc">
     <property name="enabled">
@@ -147,6 +156,9 @@ border-color: rgb(0, 0, 0);
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QTextEdit" name="console">
@@ -274,7 +286,7 @@ color: rgb(255, 255, 255);
      <string>COMPILE</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="run">
     <property name="geometry">
      <rect>
       <x>560</x>
@@ -301,7 +313,7 @@ color: rgb(255, 255, 255);
      <string>RUN</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="debug">
     <property name="geometry">
      <rect>
       <x>680</x>
@@ -458,6 +470,15 @@ color: rgb(255, 255, 255);
      <string notr="true">background-color: transparent;
 border-color:transparent ;
 color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAsNeeded</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAsNeeded</enum>
+    </property>
+    <property name="centerOnScroll">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="assembly">
@@ -701,6 +722,9 @@ color: rgb(255, 255, 255);</string>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLineEdit" name="sbr">
     <property name="enabled">
@@ -728,6 +752,9 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="label_9">
@@ -783,6 +810,9 @@ color: rgb(255, 255, 255);</string>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLineEdit" name="f2">
     <property name="enabled">
@@ -810,6 +840,9 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLineEdit" name="f1">
@@ -841,6 +874,9 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="label_11">
@@ -905,7 +941,7 @@ color: rgb(255, 255, 255);</string>
      <rect>
       <x>800</x>
       <y>60</y>
-      <width>212</width>
+      <width>241</width>
       <height>661</height>
      </rect>
     </property>
@@ -1186,7 +1222,7 @@ selection-background-color:  rgb(37, 40, 45);
      <number>20</number>
     </attribute>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>70</number>
+     <number>80</number>
     </attribute>
     <attribute name="horizontalHeaderHighlightSections">
      <bool>false</bool>
@@ -1222,7 +1258,7 @@ selection-background-color:  rgb(37, 40, 45);
     </property>
     <property name="geometry">
      <rect>
-      <x>1020</x>
+      <x>1050</x>
       <y>60</y>
       <width>483</width>
       <height>661</height>
@@ -1719,7 +1755,7 @@ color: rgb(255, 255, 255);
    <widget class="QLabel" name="label_14">
     <property name="geometry">
      <rect>
-      <x>1030</x>
+      <x>1060</x>
       <y>30</y>
       <width>151</width>
       <height>20</height>
@@ -1748,8 +1784,8 @@ color: rgb(255, 255, 255);
    <zorder>label_4</zorder>
    <zorder>label_5</zorder>
    <zorder>pushButton</zorder>
-   <zorder>pushButton_2</zorder>
-   <zorder>pushButton_3</zorder>
+   <zorder>run</zorder>
+   <zorder>debug</zorder>
    <zorder>next_step</zorder>
    <zorder>restart</zorder>
    <zorder>continue_2</zorder>

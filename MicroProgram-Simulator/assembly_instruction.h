@@ -45,7 +45,7 @@ public:
     };
     int get_address()
     {
-        return this->get_address();
+        return this->address;
     };
     int get_i()
     {

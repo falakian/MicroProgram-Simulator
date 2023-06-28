@@ -51,6 +51,7 @@ public:
     bitset<11> incpc(bitset<11> a);
     bitset<4> opcode( bitset<16> a);
     bitset<7> maping( bitset<16> a);
+    void resetRam();
     void run_instruction();
 protected:
     void compile_assembly();
@@ -97,6 +98,8 @@ private slots:
 
     void on_assembly_blockCountChanged(int newBlockCount);
 
+    void on_pushButton_4_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString issaved_micro="";
@@ -113,6 +116,8 @@ private:
     bitset<7> SBR;
     bitset<7> CAR;
     int tcommmands;
+    //int HLT;
+    int compiled;
     vector<F1> symbol_f1;
     vector<F2> symbol_f2;
     vector<F3> symbol_f3;

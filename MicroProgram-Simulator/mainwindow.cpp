@@ -127,8 +127,8 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->Microprogram_table->horizontalHeader()->resizeSections(QHeaderView::Interactive);
     printTable_RAM();
     printTable_Microgram();
-    table_variable_ins[129] = "HEX";
-    table_variable_ins[130] = "DEC";
+    table_variable_ins[-1] = "HEX";
+    table_variable_ins[-2] = "DEC";
     bitset<16> zero1(0);
     bitset<11> zero2(0);
     bitset<7> zero3(0);
@@ -152,6 +152,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->micro_number->verticalScrollBar(), &QScrollBar::valueChanged,ui->Microprogram->verticalScrollBar(),&QScrollBar::setValue);
     connect(ui->assembly->verticalScrollBar(), &QScrollBar::valueChanged,ui->assembel_number->verticalScrollBar(),&QScrollBar::setValue);
     connect(ui->assembel_number->verticalScrollBar(), &QScrollBar::valueChanged,ui->assembly->verticalScrollBar(),&QScrollBar::setValue);
+    ui->assembly->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
+    ui->Microprogram->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
 }
 
 
@@ -222,6 +224,11 @@ void MainWindow::printrow_ram(int lc)
     QTableWidgetItem *itmHex = new QTableWidgetItem();
     bitset<1> i_bit(ram_assembly.at(lc)->get_i());
     bitset<4> ins_bit(ram_assembly.at(lc)->get_instruction());
+    if(ram_assembly.at(lc)->get_instruction()<0)
+    {
+       bitset<4> temp (string("0000")) ;
+       ins_bit = temp;
+    }
     bitset<11> ad_bit(ram_assembly.at(lc)->get_address());
     bitset<16> micro_instruction(string(i_bit.to_string()+ins_bit.to_string()+ad_bit.to_string()));
     QString hex = dectohex(micro_instruction.to_ulong());
@@ -1120,6 +1127,7 @@ void MainWindow::compile_assembly()
                         break;
                     }
                     hlt_line = i;
+                    //HLT = lc1;
                     hlt = true;
                 }
                 else
@@ -1148,7 +1156,7 @@ void MainWindow::compile_assembly()
         assembly_i* instruction = new assembly_i();
         QStringList check1 , check2 , assembel;
         int address;
-        for(int i=1;i<=tcommmands;i++)
+        for(int i=0;i<tcommmands;i++)
         {
             if(end_line == i)
                 break;
@@ -1168,9 +1176,9 @@ void MainWindow::compile_assembly()
                 riz_command = tb.text().split('/', Qt::SkipEmptyParts);
                 check2 = riz_command.at(0).split(',', Qt::SkipEmptyParts);
                 if(check2.size() == 1)
-                    assembel = riz_command.at(0).split(' ' , Qt::SkipEmptyParts);
+                    assembel = check2.at(0).split(' ' , Qt::SkipEmptyParts);
                 else
-                    assembel = riz_command.at(1).split(' ' , Qt::SkipEmptyParts);
+                    assembel = check2.at(1).split(' ' , Qt::SkipEmptyParts);
                 if(assembel.size() > 3)
                 {
                     ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
@@ -1187,7 +1195,7 @@ void MainWindow::compile_assembly()
                         {
                             bool ok=1;
                             address=assembel.at(1).toInt(&ok,16);
-                            instruction->set_instruction(129);
+                            instruction->set_instruction(-1);
                             instruction->set_i(false);
                             instruction->set_address(address);
                             instruction->set_write(true);
@@ -1199,7 +1207,7 @@ void MainWindow::compile_assembly()
                             {
                                 bool ok=1;
                                 address=assembel.at(1).toInt(&ok,10);
-                                instruction->set_instruction(130);
+                                instruction->set_instruction(-2);
                                 instruction->set_i(false);
                                 instruction->set_address(address);
                                 instruction->set_write(true);
@@ -1212,6 +1220,7 @@ void MainWindow::compile_assembly()
                                     if(table_variable[assembel.at(0)]%4 == 0)
                                     {
                                         instruction->set_instruction(table_variable[assembel.at(0)]);
+                                        table_variable_ins[table_variable[assembel.at(0)]] = assembel.at(0);
                                         instruction->set_i(false);
                                         instruction->set_write(true);
                                         if(table_variable_assembly.find(assembel.at(1))!=table_variable_assembly.end() || isNumber(assembel.at(1)))
@@ -1222,7 +1231,6 @@ void MainWindow::compile_assembly()
                                             {
                                                 bool ok=1;
                                                 address=assembel.at(1).toInt(&ok,16);
-                                                table_variable_ins[table_variable[assembel.at(0)]] = assembel.at(0);
                                                 instruction->set_address(address);
                                             }
                                         }
@@ -1291,9 +1299,20 @@ void MainWindow::compile_assembly()
                             }
                             else
                             {
-                                ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
-                                error = 1;
-                                break;
+                                if(table_variable_assembly.find(assembel.at(0))!=table_variable_assembly.end())
+                                {
+                                    instruction->set_instruction(-3);
+                                    instruction->set_i(false);
+                                    instruction->set_write(true);
+                                    instruction->set_address(0);
+                                    ram_assembly.at(lc1)->set(instruction);
+                                }
+                                else
+                                {
+                                    ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
+                                    error = 1;
+                                    break;
+                                }
                             }
                         }
                         else
@@ -1359,13 +1378,17 @@ void MainWindow::compile_assembly()
                     }
                 }
             }
-        }
-        printrow_ram(lc1);
-        lc1++;
+            if(error != 1)
+            {
+                printrow_ram(lc1);
+                lc1++;
+            }
+        } 
     }
     if(error != 1)
     {
         ui->console->setText("Compilation was successful \n");
+        compiled=1;
     }
 };
 
@@ -1775,3 +1798,32 @@ void MainWindow::on_assembly_blockCountChanged(int newBlockCount)
    ui->assembel_number->verticalScrollBar()->setValue(ui->assembly->verticalScrollBar()->value());
 }
 
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    PC.reset();
+    AR.reset();
+    DR.reset();
+    AC.reset();
+    SBR.reset();
+    CAR.reset();
+    resetRam();
+    printTable_Microgram();
+    printTable_RAM();
+    ui->console->setText("");
+    compiled=0;
+    ui->run->setEnabled(true);
+    ui->debug->setEnabled(true);
+}
+
+void  MainWindow::resetRam()
+{
+    for(int i=0 ; i<128 ; i++)
+    {
+        ram_micro[i] = new microprogram_i();
+    }
+    for(int i=0 ; i<2048 ; i++)
+    {
+        ram_assembly[i] = new assembly_i();
+    }
+}
