@@ -515,7 +515,7 @@ void MainWindow::on_pushButton_clicked()
     {
     if(lc1>128)
     {
-        ui->console->setText("ERROR: OVERFLOW MICROPROGRAM RAM!\n");
+        ui->console->insertPlainText("ERROR: OVERFLOW MICROPROGRAM RAM!\n");
         error=1;
         break;
     }
@@ -530,7 +530,7 @@ void MainWindow::on_pushButton_clicked()
         {
             if(org == 0)
             {
-                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n You must write ORG first. \n");
+                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n You must write ORG first. \n");
                 error = 1;
                 break;
             }
@@ -541,7 +541,7 @@ void MainWindow::on_pushButton_clicked()
             }
             if(wait == "NEXT")
             {
-                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The label cannot be the word NEXT. \n");
+                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n The label cannot be the word NEXT. \n");
                 error = 1;
                 break;
             }
@@ -564,7 +564,7 @@ void MainWindow::on_pushButton_clicked()
                 }
                 else
                 {
-                    ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n You need hex number after ORG. \n");
+                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n You need hex number after ORG. \n");
                     error = 1;
                     break;
                 }
@@ -582,7 +582,7 @@ void MainWindow::on_pushButton_clicked()
     }
     if(org !=1)
     {
-        ui->console->setText("Microprogram : You must write ORG first. \n");
+        ui->console->insertPlainText("Microprogram : You must write ORG first. \n");
         error = 1;
     }
     lc1=0;
@@ -629,7 +629,7 @@ if(error !=1)
                         {
                             if(riz_f_command.size() > 3)
                             {
-                                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n No address is needed for the MAP command. \n");
+                                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n No address is needed for the MAP command. \n");
                                 error = 1;
                                 break;
                             }
@@ -659,7 +659,7 @@ if(error !=1)
                                         }
                                         else
                                         {
-                                            ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
+                                            ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
                                             error = 1;
                                             break;
                                         }
@@ -675,7 +675,7 @@ if(error !=1)
                         {
                             if(riz_f_command.size() > 4)
                             {
-                                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
+                                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                                 error = 1;
                                 break;
                             }
@@ -707,7 +707,7 @@ if(error !=1)
                                             }
                                             else
                                             {
-                                                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
+                                                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
                                                 error = 1;
                                                 break;
                                             }
@@ -727,7 +727,7 @@ if(error !=1)
                                 }
                                 else
                                 {
-                                    ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such label. \n");
+                                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such label. \n");
                                     error = 1;
                                     break;
                                 }
@@ -736,14 +736,14 @@ if(error !=1)
                     }
                     else
                     {
-                        ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such branch. \n");
+                        ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such branch. \n");
                         error = 1;
                         break;
                     }
                 }
                 else
                 {
-                    ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such condition. \n");
+                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such condition. \n");
                     error = 1;
                     break;
                 }
@@ -765,7 +765,7 @@ if(error !=1)
                     }
                     else
                     {
-                        ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
+                        ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
                         error = 1;
                         break;
                     }
@@ -779,7 +779,7 @@ if(error !=1)
                         {
                             if(riz_f_command.size() > 3)
                             {
-                                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n No address is needed for the MAP command. \n");
+                                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n No address is needed for the MAP command. \n");
                                 error = 1;
                                 break;
                             }
@@ -805,7 +805,7 @@ if(error !=1)
                                         }
                                         else
                                         {
-                                            ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
+                                            ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
                                             error = 1;
                                             break;
                                         }
@@ -816,7 +816,7 @@ if(error !=1)
                                 instruction->set_write(true);
                                 if(instruction->get_f1().get_dec() == instruction->get_f2().get_dec() || instruction->get_f1().get_dec() == instruction->get_f3().get_dec() || instruction->get_f2().get_dec() == instruction->get_f3().get_dec())
                                 {
-                                    ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
+                                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
                                     error = 1;
                                     break;
                                 }
@@ -830,7 +830,7 @@ if(error !=1)
                         {
                             if(riz_f_command.size() > 4)
                             {
-                                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
+                                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                                 error = 1;
                                 break;
                             }
@@ -859,7 +859,7 @@ if(error !=1)
                                             }
                                             else
                                             {
-                                                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
+                                                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
                                                 error = 1;
                                                 break;
                                             }
@@ -878,7 +878,7 @@ if(error !=1)
                                     }
                                     if(instruction->get_f1().get_dec() == instruction->get_f2().get_dec() || instruction->get_f1().get_dec() == instruction->get_f3().get_dec() || instruction->get_f2().get_dec() == instruction->get_f3().get_dec())
                                     {
-                                        ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
+                                        ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
                                         error = 1;
                                         break;
                                     }
@@ -890,7 +890,7 @@ if(error !=1)
 
                                 else
                                 {
-                                    ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such label. \n");
+                                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such label. \n");
                                     error = 1;
                                     break;
                                 }
@@ -899,14 +899,14 @@ if(error !=1)
                     }
                     else
                     {
-                        ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such branch. \n");
+                        ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such branch. \n");
                         error = 1;
                         break;
                     }
                 }
                 else
                 {
-                    ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such condition. \n");
+                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such condition. \n");
                     error = 1;
                     break;
                 }
@@ -933,7 +933,7 @@ if(error !=1)
                                     {
                                         if(riz_f_command.size() > 3)
                                         {
-                                            ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n No address is needed for the MAP command. \n");
+                                            ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n No address is needed for the MAP command. \n");
                                             error = 1;
                                             break;
                                         }
@@ -945,7 +945,7 @@ if(error !=1)
                                             instruction->set_address(0);
                                             if(instruction->get_f1().get_dec() == instruction->get_f2().get_dec() || instruction->get_f1().get_dec() == instruction->get_f3().get_dec() || instruction->get_f2().get_dec() == instruction->get_f3().get_dec())
                                             {
-                                                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
+                                                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
                                                 error = 1;
                                                 break;
                                             }
@@ -959,7 +959,7 @@ if(error !=1)
                                     {
                                         if(riz_f_command.size() > 4)
                                         {
-                                            ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
+                                            ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                                             error = 1;
                                             break;
                                         }
@@ -980,7 +980,7 @@ if(error !=1)
                                                 }
                                                 if(instruction->get_f1().get_dec() == instruction->get_f2().get_dec() || instruction->get_f1().get_dec() == instruction->get_f3().get_dec() || instruction->get_f2().get_dec() == instruction->get_f3().get_dec())
                                                 {
-                                                    ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
+                                                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n The destination register of the commands is equal. \n");
                                                     error = 1;
                                                     break;
                                                 }
@@ -992,7 +992,7 @@ if(error !=1)
 
                                             else
                                             {
-                                                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such label. \n");
+                                                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such label. \n");
                                                 error = 1;
                                                 break;
                                             }
@@ -1001,14 +1001,14 @@ if(error !=1)
                                 }
                                 else
                                 {
-                                    ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such branch. \n");
+                                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such branch. \n");
                                     error = 1;
                                     break;
                                 }
                             }
                             else
                             {
-                                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such condition. \n");
+                                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n There is no such condition. \n");
                                 error = 1;
                                 break;
                             }
@@ -1016,28 +1016,28 @@ if(error !=1)
                         }
                         else
                         {
-                            ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
+                            ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
                             error = 1;
                             break;
                         }
                     }
                     else
                     {
-                        ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
+                        ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
                         error = 1;
                         break;
                     }
                 }
                 else
                 {
-                    ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
+                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
                     error = 1;
                     break;
                 }
 
                 break;
             default:
-                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
+                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n F1, F2, F3 entered incorrectly. \n");
                 error = 1;
                 break;
             }
@@ -1053,7 +1053,7 @@ if(error !=1)
 }
 if(error != 1)
 {
-    ui->console->setText("Microprogram was compiled successfully \n");
+    ui->console->insertPlainText("Microprogram was compiled successfully \n");
      compile_assembly();
 }
 }
@@ -1062,7 +1062,6 @@ void MainWindow::compile_assembly()
 {
     tcommmands = ui->assembly->document()->blockCount();
     QTextDocument *doc = ui->assembly->document();
-    ui->console->setText("");
     int  error = 0 , lc1=0 , org=0 , hlt_line=0 , end_line=0;
     bool hlt = false , end=false;
     QStringList riz_command;
@@ -1071,7 +1070,7 @@ void MainWindow::compile_assembly()
     {
         if(lc1>2048)
         {
-            ui->console->setText("ERROR: OVERFLOW RAM!\n");
+            ui->console->insertPlainText("ERROR: OVERFLOW RAM!\n");
             error=1;
             break;
         }
@@ -1086,7 +1085,7 @@ void MainWindow::compile_assembly()
         {
             if(org == 0)
             {
-                ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n You must write ORG first. \n");
+                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n You must write ORG first. \n");
                 error = 1;
                 break;
             }
@@ -1111,7 +1110,7 @@ void MainWindow::compile_assembly()
                 }
                 else
                 {
-                    ui->console->setText("Microprogram : error in line:"+QString::number(i+1)+"\n You need hex number after ORG. \n");
+                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n You need hex number after ORG. \n");
                     error = 1;
                     break;
                 }
@@ -1122,7 +1121,7 @@ void MainWindow::compile_assembly()
                 {
                     if(hlt == true)
                     {
-                        ui->console->setText("Assembly code entry : Entered code does not have end or hlt \n");
+                        ui->console->insertPlainText("Assembly code entry : Entered code does not have end or hlt \n");
                         error = 1;
                         break;
                     }
@@ -1148,7 +1147,7 @@ void MainWindow::compile_assembly()
     }
     if(hlt == false || end == false)
     {
-        ui->console->setText("Assembly code entry : Entered code does not have end or hlt \n");
+        ui->console->insertPlainText("Assembly code entry : Entered code does not have end or hlt \n");
         error = 1;
     }
     else
@@ -1163,8 +1162,13 @@ void MainWindow::compile_assembly()
             error = 0;
             tb = doc->findBlockByLineNumber(i);
             check1 = tb.text().split(' ', Qt::SkipEmptyParts);
-            if(check1.size()==0 || hlt_line == i)
+            if(check1.size()==0)
                 continue;
+            if( hlt_line == i)
+            {
+                HLT = lc1;
+                continue;
+            }
             if(check1.at(0)=="ORG")
             {
                 bool ok=1;
@@ -1178,10 +1182,16 @@ void MainWindow::compile_assembly()
                 if(check2.size() == 1)
                     assembel = check2.at(0).split(' ' , Qt::SkipEmptyParts);
                 else
+                {
                     assembel = check2.at(1).split(' ' , Qt::SkipEmptyParts);
+                    if(assembel.size() == 0)
+                    {
+                        assembel = check2.at(0).split(' ' , Qt::SkipEmptyParts);
+                    }
+                }
                 if(assembel.size() > 3)
                 {
-                    ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
+                    ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                     error = 1;
                     break;
                 }
@@ -1236,7 +1246,7 @@ void MainWindow::compile_assembly()
                                         }
                                         else
                                         {
-                                            ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The address must either be a hex number or its label must be available in the program. \n");
+                                            ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The address must either be a hex number or its label must be available in the program. \n");
                                             error = 1;
                                             break;
                                         }
@@ -1244,14 +1254,14 @@ void MainWindow::compile_assembly()
                                     }
                                     else
                                     {
-                                        ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n This command is in a location of the micro program memory that you do not have permission to access. \n");
+                                        ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n This command is in a location of the micro program memory that you do not have permission to access. \n");
                                         error = 1;
                                         break;
                                     }
                                 }
                                 else
                                 {
-                                    ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n You only have access to the houses of less than 64 microprogram memories. \n");
+                                    ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n You only have access to the houses of less than 64 microprogram memories. \n");
                                     error = 1;
                                     break;
                                 }
@@ -1260,7 +1270,7 @@ void MainWindow::compile_assembly()
                     }
                     else
                     {
-                        ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
+                        ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                         error = 1;
                         break;
                     }
@@ -1285,14 +1295,14 @@ void MainWindow::compile_assembly()
                                     }
                                     else
                                     {
-                                        ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n This command is in a location of the micro program memory that you do not have permission to access. \n");
+                                        ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n This command is in a location of the micro program memory that you do not have permission to access. \n");
                                         error = 1;
                                         break;
                                     }
                                 }
                                 else
                                 {
-                                    ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n You only have access to the houses of less than 64 microprogram memories. \n");
+                                    ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n You only have access to the houses of less than 64 microprogram memories. \n");
                                     error = 1;
                                     break;
                                 }
@@ -1309,7 +1319,7 @@ void MainWindow::compile_assembly()
                                 }
                                 else
                                 {
-                                    ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
+                                    ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                                     error = 1;
                                     break;
                                 }
@@ -1329,7 +1339,7 @@ void MainWindow::compile_assembly()
                                             instruction->set_i(true);
                                         else
                                         {
-                                            ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
+                                            ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                                             error = 1;
                                             break;
                                         }
@@ -1347,7 +1357,7 @@ void MainWindow::compile_assembly()
                                         }
                                         else
                                         {
-                                            ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The address must either be a hex number or its label must be available in the program. \n");
+                                            ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The address must either be a hex number or its label must be available in the program. \n");
                                             error = 1;
                                             break;
                                         }
@@ -1356,21 +1366,21 @@ void MainWindow::compile_assembly()
                                     }
                                     else
                                     {
-                                        ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n This command is in a location of the micro program memory that you do not have permission to access. \n");
+                                        ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n This command is in a location of the micro program memory that you do not have permission to access. \n");
                                         error = 1;
                                         break;
                                     }
                                 }
                                 else
                                 {
-                                    ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n You only have access to the houses of less than 64 microprogram memories. \n");
+                                    ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n You only have access to the houses of less than 64 microprogram memories. \n");
                                     error = 1;
                                     break;
                                 }
                             }
                             else
                             {
-                                ui->console->setText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
+                                ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                                 error = 1;
                                 break;
                             }
@@ -1387,7 +1397,7 @@ void MainWindow::compile_assembly()
     }
     if(error != 1)
     {
-        ui->console->setText("Compilation was successful \n");
+        ui->console->insertPlainText("Compilation was successful \n");
         compiled=1;
     }
 };
@@ -1580,7 +1590,7 @@ int  MainWindow::run_instruction_microprogram(int l , bool id)
 {
     if(!ram_micro.at(l)->get_write())
     {
-        ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n It refers to the empty house of memory. \n");
+        ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n It refers to the empty house of memory. \n");
         return -1 ;
     }
     bitset<11> AR_T=AR;
@@ -1631,7 +1641,7 @@ int  MainWindow::run_instruction_microprogram(int l , bool id)
                             {
                                 if(ram_micro.at(l)->get_f1().get_intersection() != "NOP")
                                 {
-                                    ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n The f1 command was not recognized. \n");
+                                    ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n The f1 command was not recognized. \n");
                                     return -1 ;
                                 }
                             }
@@ -1657,7 +1667,7 @@ int  MainWindow::run_instruction_microprogram(int l , bool id)
                     }
                     else
                     {
-                        ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n You want to read the contents of the empty memory house. \n");
+                        ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n You want to read the contents of the empty memory house. \n");
                         return -1;
                     }
                 }
@@ -1674,7 +1684,7 @@ int  MainWindow::run_instruction_microprogram(int l , bool id)
                             {
                                 if(ram_micro.at(l)->get_f2().get_intersection() != "NOP")
                                 {
-                                    ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n The f2 command was not recognized. \n");
+                                    ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n The f2 command was not recognized. \n");
                                     return -1;
                                 }
                             }
@@ -1699,7 +1709,7 @@ int  MainWindow::run_instruction_microprogram(int l , bool id)
                         {
                             if(ram_micro.at(l)->get_f3().get_intersection() != "NOP")
                             {
-                                ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n The f3 command was not recognized. \n");
+                                ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n The f3 command was not recognized. \n");
                                 return -1;
                             }
                         }
@@ -1730,7 +1740,7 @@ int  MainWindow::run_instruction_microprogram(int l , bool id)
                     }
                     else
                     {
-                        ui->console->setText("error runtime : error in line:"+QString::number(l)+"\n branch is wrong. \n");
+                        ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n branch is wrong. \n");
                         return -1;
                     }
                 }
