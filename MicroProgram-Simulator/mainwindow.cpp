@@ -165,13 +165,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->assembel_number->verticalScrollBar(), &QScrollBar::valueChanged,ui->assembly->verticalScrollBar(),&QScrollBar::setValue);
     ui->assembly->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
     ui->Microprogram->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
-}
+};
 
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
+};
 
 void MainWindow::printTable_RAM()
 {
@@ -231,7 +231,10 @@ void MainWindow::printrow_ram_micro(int lc)
 
 void MainWindow::printrow_ram(int lc)
 {
-    ui->RAM_table->setItem(lc,1,new QTableWidgetItem(table_variable_ins[ram_assembly.at(lc)->get_instruction()]));
+    if(table_variable_ins.find(ram_assembly.at(lc)->get_instruction())!=table_variable_ins.end())
+        ui->RAM_table->setItem(lc,1,new QTableWidgetItem(table_variable_ins[ram_assembly.at(lc)->get_instruction()]));
+    else
+        ui->RAM_table->setItem(lc,1,new QTableWidgetItem(" "));
     QTableWidgetItem *itmHex = new QTableWidgetItem();
     bitset<1> i_bit(ram_assembly.at(lc)->get_i());
     bitset<4> ins_bit(ram_assembly.at(lc)->get_instruction());
@@ -242,7 +245,15 @@ void MainWindow::printrow_ram(int lc)
     }
     bitset<11> ad_bit(ram_assembly.at(lc)->get_address());
     bitset<16> micro_instruction(string(i_bit.to_string()+ins_bit.to_string()+ad_bit.to_string()));
-    QString hex = dectohex(micro_instruction.to_ulong());
+    QString hex;
+    if(micro_instruction.to_ulong() == 0)
+    {
+        hex = "0000";
+    }
+    else
+    {
+        hex = dectohex(micro_instruction.to_ulong());
+    }
     itmHex->setText(hex);
     ui->RAM_table->setItem(lc,2,itmHex);
 
@@ -260,7 +271,7 @@ bool MainWindow::fullSubtractor(bool b1, bool b2, bool& borrow)
         borrow = !b1 && b2;
     }
     return diff;
-}
+};
 // Function to calculate difference between two bitsets
 bitset<16> MainWindow::bitsetSubtract(bitset<16> x, bitset<16> y)
 {
@@ -271,14 +282,14 @@ bitset<16> MainWindow::bitsetSubtract(bitset<16> x, bitset<16> y)
         ans[i] = fullSubtractor(x[i], y[i], borrow);
     }
     return ans;
-}
+};
 
 bool MainWindow::fullAdder(bool b1, bool b2, bool& carry)
 {
     bool sum = (b1 ^ b2) ^ carry;
     carry = (b1 && b2) || (b1 && carry) || (b2 && carry);
     return sum;
-}
+};
 // Function to add two bitsets
 bitset<16> MainWindow::bitsetAdd(bitset<16>& x, bitset<16>& y)
 {
@@ -289,7 +300,7 @@ bitset<16> MainWindow::bitsetAdd(bitset<16>& x, bitset<16>& y)
         ans[i] = fullAdder(x[i], y[i], carry);
     }
     return ans;
-}
+};
 
 bitset<7> MainWindow::bitsetAdd_7bit(bitset<7>& x, bitset<7>& y)
 {
@@ -300,7 +311,7 @@ bitset<7> MainWindow::bitsetAdd_7bit(bitset<7>& x, bitset<7>& y)
         ans[i] = fullAdder(x[i], y[i], carry);
     }
     return ans;
-}
+};
 
 
 QString MainWindow::dectohex(int n)
@@ -410,7 +421,7 @@ bool MainWindow::isNumber(const QString &str)
         if (isdigit(c) == 0) return false;
     }
        return true;
-}
+};
 
 bool MainWindow::isCondition(const QString& str)
 {
@@ -420,7 +431,7 @@ bool MainWindow::isCondition(const QString& str)
             return true;
     }
     else return false;
-}
+};
 
 bool MainWindow::isBranch(const QString& str)
 {
@@ -430,7 +441,7 @@ bool MainWindow::isBranch(const QString& str)
             return true;
     }
     else return false;
-}
+};
 
 int MainWindow::command_f(QString command , int check)
 {
@@ -512,7 +523,7 @@ int MainWindow::command_f(QString command , int check)
                                     return 3;
                             }
     return 3;
-}
+};
 
 void MainWindow::on_pushButton_clicked()
 {
@@ -567,16 +578,25 @@ void MainWindow::on_pushButton_clicked()
         {
             if(riz_command.at(0)=="ORG")
             {
-                org=1;
-                if(isNumber(riz_command.at(1)))
+                if(riz_command.size() == 2)
                 {
-                    bool ok=1;
-                    lc1=riz_command.at(1).toInt(&ok,16);
-                    continue;
+                    if(isNumber(riz_command.at(1)))
+                    {
+                        bool ok=1;
+                        lc1=riz_command.at(1).toInt(&ok,16);
+                        org=1;
+                        continue;
+                    }
+                    else
+                    {
+                        ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n You need hex number after ORG. \n");
+                        error = 1;
+                        break;
+                    }
                 }
                 else
                 {
-                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n You need hex number after ORG. \n");
+                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                     error = 1;
                     break;
                 }
@@ -599,7 +619,7 @@ void MainWindow::on_pushButton_clicked()
     }
     lc1=0;
     QStringList riz_f;
-    QStringList check1 , check2;
+    QStringList check1 , check2 , check3;
     QStringList riz_f_command;
     microprogram_i *instruction = new microprogram_i;
     int com_f , control_f=0;
@@ -639,7 +659,7 @@ if(error !=1)
                     {
                         if(riz_f_command.at(2) == "MAP" || riz_f_command.at(2) == "RET")
                         {
-                            if(riz_f_command.size() > 3)
+                            if(riz_f_command.size() != 3)
                             {
                                 ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n No address is needed for the MAP command. \n");
                                 error = 1;
@@ -685,7 +705,7 @@ if(error !=1)
                         }
                         else
                         {
-                            if(riz_f_command.size() > 4)
+                            if(riz_f_command.size() != 4 )
                             {
                                 ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                                 error = 1;
@@ -761,7 +781,8 @@ if(error !=1)
                 }
                 break;
             case 2:
-                com_f = command_f(riz_f.at(0) , 0);
+                check3=riz_f.at(0).split(' ' , Qt::SkipEmptyParts);
+                com_f = command_f(check3.at(0) , 0);
                 if(com_f % 4 == 0)
                 {
                     instruction->set_f1(symbol_f1.at((com_f/4)));
@@ -789,7 +810,7 @@ if(error !=1)
                     {
                         if(riz_f_command.at(2) == "MAP" || riz_f_command.at(2) == "RET")
                         {
-                            if(riz_f_command.size() > 3)
+                            if(riz_f_command.size() != 3)
                             {
                                 ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n No address is needed for the MAP command. \n");
                                 error = 1;
@@ -840,7 +861,7 @@ if(error !=1)
                         }
                         else
                         {
-                            if(riz_f_command.size() > 4)
+                            if(riz_f_command.size() != 4)
                             {
                                 ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                                 error = 1;
@@ -924,7 +945,8 @@ if(error !=1)
                 }
                 break;
             case 3:
-                com_f = command_f(riz_f.at(0) , 0);
+                check3=riz_f.at(0).split(' ' , Qt::SkipEmptyParts);
+                com_f = command_f(check3.at(0) , 0);
                 if(com_f % 4 == 0)
                 {
                     instruction->set_f1(symbol_f1.at((com_f/4)));
@@ -943,7 +965,7 @@ if(error !=1)
                                 {
                                     if(riz_f_command.at(2) == "MAP" || riz_f_command.at(2) == "RET")
                                     {
-                                        if(riz_f_command.size() > 3)
+                                        if(riz_f_command.size() != 3)
                                         {
                                             ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n No address is needed for the MAP command. \n");
                                             error = 1;
@@ -969,7 +991,7 @@ if(error !=1)
                                     }
                                     else
                                     {
-                                        if(riz_f_command.size() > 4)
+                                        if(riz_f_command.size() != 4)
                                         {
                                             ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                                             error = 1;
@@ -1068,7 +1090,7 @@ if(error != 1)
     ui->console->insertPlainText("Microprogram was compiled successfully \n");
      compile_assembly();
 }
-}
+};
 
 void MainWindow::compile_assembly()
 {
@@ -1097,7 +1119,7 @@ void MainWindow::compile_assembly()
         {
             if(org == 0)
             {
-                ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n You must write ORG first. \n");
+                ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n You must write ORG first. \n");
                 error = 1;
                 break;
             }
@@ -1114,15 +1136,24 @@ void MainWindow::compile_assembly()
             if(riz_command.at(0)=="ORG")
             {
                 org=1;
-                if(isNumber(riz_command.at(1)))
+                if(riz_command.size() == 2)
                 {
-                    bool ok=1;
-                    lc1=riz_command.at(1).toInt(&ok,16);
-                    continue;
+                    if(isNumber(riz_command.at(1)))
+                    {
+                        bool ok=1;
+                        lc1=riz_command.at(1).toInt(&ok,16);
+                        continue;
+                    }
+                    else
+                    {
+                        ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n You need hex number after ORG. \n");
+                        error = 1;
+                        break;
+                    }
                 }
                 else
                 {
-                    ui->console->insertPlainText("Microprogram : error in line:"+QString::number(i+1)+"\n You need hex number after ORG. \n");
+                    ui->console->insertPlainText("Assembly code entry : error in line:"+QString::number(i+1)+"\n The syntax is incorrect. \n");
                     error = 1;
                     break;
                 }
@@ -1793,6 +1824,7 @@ int  MainWindow::run_instruction_microprogram(int l )
     {
         ui->Microprogram_table->item(l , j)->setBackground(QColor(37, 40, 45));
     }
+    ui->Microprogram_table->verticalScrollBar()->setValue(l-7);
     return 0;
 };
 
@@ -1843,6 +1875,7 @@ void MainWindow::run_instruction()
     {
         ui->console->setText("You should compile your program first!\n");
     }
+    ui->Microprogram_table->verticalScrollBar()->setValue(0);
 };
 
 
@@ -1873,7 +1906,7 @@ void MainWindow::on_assembly_blockCountChanged(int newBlockCount)
         ui->assembel_number->setItem(i,0,n);
     }
    ui->assembel_number->verticalScrollBar()->setValue(ui->assembly->verticalScrollBar()->value());
-}
+};
 
 
 void MainWindow::on_pushButton_4_clicked()
@@ -1904,7 +1937,7 @@ void MainWindow::on_pushButton_4_clicked()
     run = 0;
     debug = 0;
     debug_stop = 0;
-}
+};
 
 void  MainWindow::resetRam()
 {
@@ -1916,7 +1949,7 @@ void  MainWindow::resetRam()
     {
         ram_assembly[i] = new assembly_i();
     }
-}
+};
 
 void MainWindow::on_debug_clicked()
 {
@@ -1940,13 +1973,13 @@ void MainWindow::on_debug_clicked()
     {
         ui->console->setText("You should compile your program first!\n");
     }
-}
+};
 
 
 void MainWindow::on_run_clicked()
 {
     run_instruction();
-}
+};
 
 
 void MainWindow::on_next_step_clicked()
@@ -1994,7 +2027,7 @@ void MainWindow::on_next_step_clicked()
     {
         ui->console->setText("You should compile your program first!\n");
     }
-}
+};
 
 
 void MainWindow::on_restart_clicked()
@@ -2020,7 +2053,7 @@ void MainWindow::on_restart_clicked()
         ui->actionstop->setEnabled(true);
         on_next_step_clicked();
     }
-}
+};
 
 
 void MainWindow::on_continue_2_clicked()
@@ -2046,7 +2079,7 @@ void MainWindow::on_continue_2_clicked()
         ui->actioncontinue->setEnabled(false);
         ui->actionstop->setEnabled(false);
     }
-}
+};
 
 
 void MainWindow::on_stop_clicked()
@@ -2071,41 +2104,41 @@ void MainWindow::on_stop_clicked()
         ui->actionstop->setEnabled(false);
         debug_stop = 1 ;
     }
-}
+};
 
 
 void MainWindow::on_actiondebug_triggered()
 {
     on_debug_clicked();
-}
+};
 
 
 void MainWindow::on_actionrun_without_debug_triggered()
 {
     run_instruction();
-}
+};
 
 
 void MainWindow::on_actionnext_step_triggered()
 {
     on_next_step_clicked();
-}
+};
 
 
 void MainWindow::on_actioncontinue_triggered()
 {
     on_continue_2_clicked();
-}
+};
 
 
 void MainWindow::on_actionrestart_triggered()
 {
     on_restart_clicked();
-}
+};
 
 
 void MainWindow::on_actionstop_triggered()
 {
     on_stop_clicked();
-}
+};
 

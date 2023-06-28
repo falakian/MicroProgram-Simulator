@@ -112,6 +112,18 @@ private slots:
 
     void on_stop_clicked();
 
+    void on_actiondebug_triggered();
+
+    void on_actionrun_without_debug_triggered();
+
+    void on_actionnext_step_triggered();
+
+    void on_actioncontinue_triggered();
+
+    void on_actionrestart_triggered();
+
+    void on_actionstop_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString issaved_micro="";

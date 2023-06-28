@@ -273,6 +273,9 @@ color: rgb(255, 0, 0);
       <bold>true</bold>
      </font>
     </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;COMPILE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
@@ -300,6 +303,9 @@ color: rgb(255, 255, 255);
       <bold>true</bold>
      </font>
     </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;RUN&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
@@ -326,6 +332,9 @@ color: rgb(255, 255, 255);
      <font>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
     </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;DEBUG&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1773,6 +1782,9 @@ color: rgb(0, 0, 0);
       <bold>true</bold>
      </font>
     </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;RUN&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
@@ -1858,6 +1870,9 @@ color: rgb(255, 255, 255);
      <width>1600</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="palette">
@@ -2076,12 +2091,16 @@ color: rgb(255, 255, 255);
     <addaction name="actionexit"/>
    </widget>
    <widget class="QMenu" name="menuRun">
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
     <property name="title">
      <string>Run</string>
     </property>
     <addaction name="actiondebug"/>
     <addaction name="actionrun_without_debug"/>
     <addaction name="actioncompile"/>
+    <addaction name="actionreset"/>
     <addaction name="separator"/>
     <addaction name="actionnext_step"/>
     <addaction name="actioncontinue"/>
@@ -2089,6 +2108,9 @@ color: rgb(255, 255, 255);
     <addaction name="actionstop"/>
    </widget>
    <widget class="QMenu" name="menuhelp">
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
     <property name="title">
      <string>help</string>
     </property>
@@ -2243,7 +2265,8 @@ color: rgb(255, 255, 255);
   <action name="actionnext_step">
    <property name="icon">
     <iconset resource="pic.qrc">
-     <normaloff>:/new/prefix1/pic/stepnext.png</normaloff>:/new/prefix1/pic/stepnext.png</iconset>
+     <normaloff>:/new/prefix1/pic/stepnext.png</normaloff>
+     <disabledoff>:/new/prefix1/pic/stepnextoff.png</disabledoff>:/new/prefix1/pic/stepnext.png</iconset>
    </property>
    <property name="text">
     <string>next step</string>
@@ -2255,7 +2278,8 @@ color: rgb(255, 255, 255);
   <action name="actioncontinue">
    <property name="icon">
     <iconset resource="pic.qrc">
-     <normaloff>:/new/prefix1/pic/continue.png</normaloff>:/new/prefix1/pic/continue.png</iconset>
+     <normaloff>:/new/prefix1/pic/continue.png</normaloff>
+     <disabledoff>:/new/prefix1/pic/continueoff.png</disabledoff>:/new/prefix1/pic/continue.png</iconset>
    </property>
    <property name="text">
     <string>continue</string>
@@ -2267,7 +2291,8 @@ color: rgb(255, 255, 255);
   <action name="actionrestart">
    <property name="icon">
     <iconset resource="pic.qrc">
-     <normaloff>:/new/prefix1/pic/restart.png</normaloff>:/new/prefix1/pic/restart.png</iconset>
+     <normaloff>:/new/prefix1/pic/restart.png</normaloff>
+     <disabledoff>:/new/prefix1/pic/restartoff.png</disabledoff>:/new/prefix1/pic/restart.png</iconset>
    </property>
    <property name="text">
     <string>restart</string>
@@ -2276,7 +2301,8 @@ color: rgb(255, 255, 255);
   <action name="actionstop">
    <property name="icon">
     <iconset resource="pic.qrc">
-     <normaloff>:/new/prefix1/pic/stop.png</normaloff>:/new/prefix1/pic/stop.png</iconset>
+     <normaloff>:/new/prefix1/pic/stop.png</normaloff>
+     <disabledoff>:/new/prefix1/pic/stopoff.png</disabledoff>:/new/prefix1/pic/stop.png</iconset>
    </property>
    <property name="text">
     <string>stop</string>
@@ -2289,6 +2315,15 @@ color: rgb(255, 255, 255);
    </property>
    <property name="text">
     <string>about project</string>
+   </property>
+  </action>
+  <action name="actionreset">
+   <property name="icon">
+    <iconset resource="pic.qrc">
+     <normaloff>:/new/prefix1/pic/reset.png</normaloff>:/new/prefix1/pic/reset.png</iconset>
+   </property>
+   <property name="text">
+    <string>reset</string>
    </property>
   </action>
  </widget>
