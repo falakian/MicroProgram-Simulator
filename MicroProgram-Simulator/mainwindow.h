@@ -116,7 +116,7 @@ private:
     bitset<7> SBR;
     bitset<7> CAR;
     int tcommmands;
-    //int HLT;
+    int HLT;
     int compiled;
     vector<F1> symbol_f1;
     vector<F2> symbol_f2;
