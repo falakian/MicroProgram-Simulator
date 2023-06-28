@@ -144,6 +144,8 @@ MainWindow::MainWindow(QWidget *parent)
     CAR=fetch;
     CAR_b = zero3;
     run = 0;
+    debug = 0;
+    debug_stop = 0;
     ui->ac->setText(QString::fromStdString(AC.to_string()));
     ui->dr->setText(QString::fromStdString(DR.to_string()));
     ui->pc->setText(QString::fromStdString(PC.to_string()));
@@ -1792,8 +1794,11 @@ int  MainWindow::run_instruction_microprogram(int l )
 
 void MainWindow::run_instruction()
 {
-
-    if(run == 1)
+    if(debug == 1)
+    {
+        ui->console->setText("You are in debug mode, stop debugging first!\n");
+    }
+    if(run == 1 || debug_stop == 1)
     {
         on_pushButton_clicked();
     }
@@ -1885,6 +1890,8 @@ void MainWindow::on_pushButton_4_clicked()
     ui->stop->setEnabled(false);
     ui->restart->setEnabled(false);
     run = 0;
+    debug = 0;
+    debug_stop = 0;
 }
 
 void  MainWindow::resetRam()
@@ -1901,7 +1908,7 @@ void  MainWindow::resetRam()
 
 void MainWindow::on_debug_clicked()
 {
-    if(run == 1)
+    if(run == 1 || debug_stop == 1)
     {
         on_pushButton_clicked();
     }
@@ -1928,6 +1935,7 @@ void MainWindow::on_run_clicked()
 
 void MainWindow::on_next_step_clicked()
 {
+    debug = 1;
     ui->console->setText("");
     if(compiled == 1)
     {
@@ -1942,6 +1950,7 @@ void MainWindow::on_next_step_clicked()
                 ui->continue_2->setEnabled(false);
                 ui->stop->setEnabled(false);
                 ui->restart->setEnabled(false);
+                debug = 0;
             }
             else
             {
@@ -1966,35 +1975,65 @@ void MainWindow::on_next_step_clicked()
 
 void MainWindow::on_restart_clicked()
 {
-    for(int j=0 ; j<8 ;j++ )
+    if(debug == 0)
     {
-        ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
+        ui->console->setText("First, click the next step button!\n");
     }
-    on_pushButton_clicked();
-    on_next_step_clicked();
+    else
+    {
+        for(int j=0 ; j<8 ;j++ )
+        {
+            ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
+        }
+        on_pushButton_clicked();
+        ui->next_step->setEnabled(true);
+        ui->continue_2->setEnabled(true);
+        ui->stop->setEnabled(true);
+        ui->restart->setEnabled(true);
+        on_next_step_clicked();
+    }
 }
 
 
 void MainWindow::on_continue_2_clicked()
 {
-    for(int j=0 ; j<8 ;j++ )
+    if(debug == 0)
     {
-        ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
+        ui->console->setText("First, click the next step button!\n");
     }
-    run_instruction();
-    ui->next_step->setEnabled(false);
-    ui->continue_2->setEnabled(false);
-    ui->stop->setEnabled(false);
-    ui->restart->setEnabled(false);
+    else
+    {
+        debug =0;
+        for(int j=0 ; j<8 ;j++ )
+        {
+            ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
+        }
+        run_instruction();
+        ui->next_step->setEnabled(false);
+        ui->continue_2->setEnabled(false);
+        ui->stop->setEnabled(false);
+        ui->restart->setEnabled(false);
+    }
 }
 
 
 void MainWindow::on_stop_clicked()
 {
-    for(int j=0 ; j<8 ;j++ )
+    if(debug == 0)
     {
-        ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
+        ui->console->setText("First, click the next step button!\n");
     }
-
+    else
+    {
+        for(int j=0 ; j<8 ;j++ )
+        {
+            ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
+        }
+        ui->next_step->setEnabled(false);
+        ui->continue_2->setEnabled(false);
+        ui->stop->setEnabled(false);
+        ui->restart->setEnabled(false);
+        debug_stop = 1 ;
+    }
 }
 

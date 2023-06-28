@@ -133,6 +133,8 @@ private:
     int HLT;
     int compiled;
     int run;
+    int debug;
+    int debug_stop;
     vector<F1> symbol_f1;
     vector<F2> symbol_f2;
     vector<F3> symbol_f3;
