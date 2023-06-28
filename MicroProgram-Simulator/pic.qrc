@@ -13,5 +13,6 @@
         <file>pic/run.png</file>
         <file>pic/about.png</file>
         <file>pic/icon.png</file>
+        <file>pic/stepnextoff.png</file>
     </qresource>
 </RCC>

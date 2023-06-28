@@ -37,7 +37,7 @@ border-color: rgb(0, 0, 0);
    <property name="enabled">
     <bool>true</bool>
    </property>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="ar">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -49,14 +49,23 @@ border-color: rgb(0, 0, 0);
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;AR Register&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(57, 62, 70);</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="dr">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -68,14 +77,23 @@ border-color: rgb(0, 0, 0);
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;DR Register&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(57, 62, 70);</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="ac">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -87,14 +105,23 @@ border-color: rgb(0, 0, 0);
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;AC Register&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(57, 62, 70);</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="pc">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -106,11 +133,20 @@ border-color: rgb(0, 0, 0);
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;PC Register&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(57, 62, 70);</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QTextEdit" name="console">
@@ -315,6 +351,17 @@ color: rgb(255, 255, 255);
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="pic.qrc">
+      <normaloff>:/new/prefix1/pic/stepnext.png</normaloff>
+      <normalon>:/new/prefix1/pic/stepnextoff.png</normalon>:/new/prefix1/pic/stepnext.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>35</width>
+      <height>35</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="restart">
@@ -627,7 +674,7 @@ color: rgb(255, 255, 255);</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_5">
+   <widget class="QLineEdit" name="car">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -639,14 +686,23 @@ color: rgb(255, 255, 255);</string>
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>17</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;CAR&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(57, 62, 70);</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_6">
+   <widget class="QLineEdit" name="sbr">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -658,11 +714,20 @@ color: rgb(255, 255, 255);</string>
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>17</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;SBR&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(57, 62, 70);</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_9">
@@ -691,7 +756,7 @@ color: rgb(255, 255, 255);</string>
      <string>SBR:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_7">
+   <widget class="QLineEdit" name="f3">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -703,14 +768,23 @@ color: rgb(255, 255, 255);</string>
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;F3&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(57, 62, 70);</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_8">
+   <widget class="QLineEdit" name="f2">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -722,14 +796,23 @@ color: rgb(255, 255, 255);</string>
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;F2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(57, 62, 70);</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_9">
+   <widget class="QLineEdit" name="f1">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -741,11 +824,23 @@ color: rgb(255, 255, 255);</string>
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#4992ff;&quot;&gt;F1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(57, 62, 70);</string>
+    </property>
+    <property name="inputMask">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_11">
@@ -1642,10 +1737,10 @@ color: rgb(255, 255, 255);
    </widget>
    <zorder>assembel_number</zorder>
    <zorder>micro_number</zorder>
-   <zorder>lineEdit</zorder>
-   <zorder>lineEdit_2</zorder>
-   <zorder>lineEdit_3</zorder>
-   <zorder>lineEdit_4</zorder>
+   <zorder>ar</zorder>
+   <zorder>dr</zorder>
+   <zorder>ac</zorder>
+   <zorder>pc</zorder>
    <zorder>console</zorder>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
@@ -1670,13 +1765,13 @@ color: rgb(255, 255, 255);
    <zorder>save_micro</zorder>
    <zorder>new_micro</zorder>
    <zorder>open_micro</zorder>
-   <zorder>lineEdit_5</zorder>
-   <zorder>lineEdit_6</zorder>
+   <zorder>car</zorder>
+   <zorder>sbr</zorder>
    <zorder>label_9</zorder>
    <zorder>label_10</zorder>
-   <zorder>lineEdit_7</zorder>
-   <zorder>lineEdit_8</zorder>
-   <zorder>lineEdit_9</zorder>
+   <zorder>f3</zorder>
+   <zorder>f2</zorder>
+   <zorder>f1</zorder>
    <zorder>label_11</zorder>
    <zorder>label_12</zorder>
    <zorder>label_13</zorder>

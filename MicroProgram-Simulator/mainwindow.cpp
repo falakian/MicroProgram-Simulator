@@ -108,7 +108,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->save_micro->setIcon(QIcon(":/new/prefix1/pic/save.png"));
     ui->open_micro->setIcon(QIcon(":/new/prefix1/pic/open.png"));
     ui->new_micro->setIcon(QIcon(":/new/prefix1/pic/new.png"));
-    ui->next_step->setIcon(QIcon(":/new/prefix1/pic/stepnext.png"));
+    //ui->next_step->setIcon(QIcon(":/new/prefix1/pic/stepnext.png"));
+    ui->next_step->setEnabled(false);
     ui->continue_2->setIcon(QIcon(":/new/prefix1/pic/continue.png"));
     ui->stop->setIcon(QIcon(":/new/prefix1/pic/stop.png"));
     ui->restart->setIcon(QIcon(":/new/prefix1/pic/restart.png"));
@@ -138,6 +139,15 @@ MainWindow::MainWindow(QWidget *parent)
     PC=zero2;
     SBR=zero3;
     CAR=fetch;
+    ui->ac->setText(QString::fromStdString(AC.to_string()));
+    ui->dr->setText(QString::fromStdString(DR.to_string()));
+    ui->pc->setText(QString::fromStdString(PC.to_string()));
+    ui->ar->setText(QString::fromStdString(AR.to_string()));
+    ui->sbr->setText(QString::fromStdString(SBR.to_string()));
+    ui->car->setText(QString::fromStdString(CAR.to_string()));
+    ui->f1->setText("NOP");
+    ui->f2->setText("NOP");
+    ui->f3->setText("NOP");
     connect(ui->Microprogram->verticalScrollBar(), &QScrollBar::valueChanged,ui->micro_number->verticalScrollBar(),&QScrollBar::setValue);
     connect(ui->micro_number->verticalScrollBar(), &QScrollBar::valueChanged,ui->Microprogram->verticalScrollBar(),&QScrollBar::setValue);
     connect(ui->assembly->verticalScrollBar(), &QScrollBar::valueChanged,ui->assembel_number->verticalScrollBar(),&QScrollBar::setValue);
@@ -1714,6 +1724,19 @@ int  MainWindow::run_instruction_microprogram(int l , bool id)
     PC=PC_T;
     SBR=SBR_T;
     CAR=CAR_T;
+    ui->ac->setText(QString::fromStdString(AC.to_string()));
+    ui->dr->setText(QString::fromStdString(DR.to_string()));
+    ui->pc->setText(QString::fromStdString(PC.to_string()));
+    ui->ar->setText(QString::fromStdString(AR.to_string()));
+    ui->sbr->setText(QString::fromStdString(SBR.to_string()));
+    ui->car->setText(QString::fromStdString(CAR.to_string()));
+    ui->f1->setText(ram_micro.at(l)->get_f1().get_intersection());
+    ui->f2->setText(ram_micro.at(l)->get_f2().get_intersection());
+    ui->f3->setText(ram_micro.at(l)->get_f3().get_intersection());
+    for(int j=0 ; j<8 ;j++ )
+    {
+        ui->Microprogram_table->item(l , j)->setBackground(QColor(37, 40, 45));
+    }
     return 0;
 };
 

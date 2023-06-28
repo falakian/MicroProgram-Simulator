@@ -12,6 +12,7 @@
 #include <QFile>
 #include <bitset>
 #include <QScrollBar>
+#include <QPalette>
 #include "instruction_f1.h"
 #include "instruction_f2.h"
 #include "instruction_f3.h"
