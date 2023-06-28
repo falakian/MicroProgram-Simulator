@@ -1966,8 +1966,35 @@ void MainWindow::on_next_step_clicked()
 
 void MainWindow::on_restart_clicked()
 {
+    for(int j=0 ; j<8 ;j++ )
+    {
+        ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
+    }
     on_pushButton_clicked();
     on_next_step_clicked();
+}
+
+
+void MainWindow::on_continue_2_clicked()
+{
+    for(int j=0 ; j<8 ;j++ )
+    {
+        ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
+    }
+    run_instruction();
+    ui->next_step->setEnabled(false);
+    ui->continue_2->setEnabled(false);
+    ui->stop->setEnabled(false);
+    ui->restart->setEnabled(false);
+}
+
+
+void MainWindow::on_stop_clicked()
+{
+    for(int j=0 ; j<8 ;j++ )
+    {
+        ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
+    }
 
 }
 

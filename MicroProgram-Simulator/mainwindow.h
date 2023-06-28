@@ -106,6 +106,12 @@ private slots:
 
     void on_next_step_clicked();
 
+    void on_restart_clicked();
+
+    void on_continue_2_clicked();
+
+    void on_stop_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString issaved_micro="";
