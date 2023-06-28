@@ -142,6 +142,8 @@ MainWindow::MainWindow(QWidget *parent)
     PC=zero2;
     SBR=zero3;
     CAR=fetch;
+    CAR_b = zero3;
+    run = 0;
     ui->ac->setText(QString::fromStdString(AC.to_string()));
     ui->dr->setText(QString::fromStdString(DR.to_string()));
     ui->pc->setText(QString::fromStdString(PC.to_string()));
@@ -508,6 +510,7 @@ int MainWindow::command_f(QString command , int check)
 
 void MainWindow::on_pushButton_clicked()
 {
+    on_pushButton_4_clicked();
     tcommmands = ui->Microprogram->document()->blockCount();
     QTextDocument *doc = ui->Microprogram->document();
     ui->console->setText("");
@@ -1253,6 +1256,7 @@ void MainWindow::compile_assembly()
                                             error = 1;
                                             break;
                                         }
+                                        ram_assembly.at(lc1)->set_valid_address(true);
                                         ram_assembly.at(lc1)->set(instruction);
                                     }
                                     else
@@ -1293,6 +1297,7 @@ void MainWindow::compile_assembly()
                                         instruction->set_i(false);
                                         instruction->set_write(true);
                                         instruction->set_address(0);
+                                        ram_assembly.at(lc1)->set_valid_address(false);
                                         table_variable_ins[table_variable[assembel.at(0)]] = assembel.at(0);
                                         ram_assembly.at(lc1)->set(instruction);
                                     }
@@ -1318,6 +1323,7 @@ void MainWindow::compile_assembly()
                                     instruction->set_i(false);
                                     instruction->set_write(true);
                                     instruction->set_address(0);
+                                    ram_assembly.at(lc1)->set_valid_address(false);
                                     ram_assembly.at(lc1)->set(instruction);
                                 }
                                 else
@@ -1365,6 +1371,7 @@ void MainWindow::compile_assembly()
                                             break;
                                         }
                                         table_variable_ins[table_variable[assembel.at(0)]] = assembel.at(0);
+                                        ram_assembly.at(lc1)->set_valid_address(true);
                                         ram_assembly.at(lc1)->set(instruction);
                                     }
                                     else
@@ -1662,6 +1669,12 @@ int  MainWindow::run_instruction_microprogram(int l )
                     int line = AR.to_ulong();
                     if(ram_assembly.at(line)->get_write())
                     {
+                        if(ram_assembly.at(line)->get_valid_address() == false && INDRCT)
+                        {
+                            ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n There is no address entered. \n");
+                            INDRCT = false ;
+                            return -1;
+                        }
                         bitset<1> i_bit(ram_assembly.at(line)->get_i());
                         bitset<4> ins_bit(ram_assembly.at(line)->get_instruction()/4);
                         bitset<11> ad_bit(ram_assembly.at(line)->get_address());
@@ -1779,9 +1792,19 @@ int  MainWindow::run_instruction_microprogram(int l )
 
 void MainWindow::run_instruction()
 {
+
+    if(run == 1)
+    {
+        on_pushButton_clicked();
+    }
     ui->console->setText("");
+    run = 1;
     if(compiled == 1)
     {
+        ui->next_step->setEnabled(false);
+        ui->continue_2->setEnabled(false);
+        ui->stop->setEnabled(false);
+        ui->restart->setEnabled(false);
         while(true)
             if(PC.to_ulong() - 1 == HLT)
             {
@@ -1842,12 +1865,14 @@ void MainWindow::on_assembly_blockCountChanged(int newBlockCount)
 
 void MainWindow::on_pushButton_4_clicked()
 {
+    bitset<7> fetch(64);
     PC.reset();
     AR.reset();
     DR.reset();
     AC.reset();
     SBR.reset();
-    CAR.reset();
+    CAR_b.reset();
+    CAR = fetch ;
     resetRam();
     printTable_Microgram();
     printTable_RAM();
@@ -1859,6 +1884,7 @@ void MainWindow::on_pushButton_4_clicked()
     ui->continue_2->setEnabled(false);
     ui->stop->setEnabled(false);
     ui->restart->setEnabled(false);
+    run = 0;
 }
 
 void  MainWindow::resetRam()
@@ -1875,6 +1901,11 @@ void  MainWindow::resetRam()
 
 void MainWindow::on_debug_clicked()
 {
+    if(run == 1)
+    {
+        on_pushButton_clicked();
+    }
+    ui->console->setText("");
     if(compiled == 1)
     {
         ui->next_step->setEnabled(true);
@@ -1892,5 +1923,51 @@ void MainWindow::on_debug_clicked()
 void MainWindow::on_run_clicked()
 {
     run_instruction();
+}
+
+
+void MainWindow::on_next_step_clicked()
+{
+    ui->console->setText("");
+    if(compiled == 1)
+    {
+            for(int j=0 ; j<8 ;j++ )
+            {
+                ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
+            }
+            if(PC.to_ulong() - 1 == HLT)
+            {
+                ui->console->setText("The program ran successfully!\n");
+                ui->next_step->setEnabled(false);
+                ui->continue_2->setEnabled(false);
+                ui->stop->setEnabled(false);
+                ui->restart->setEnabled(false);
+            }
+            else
+            {
+                CAR_b= CAR;
+                int error = 0;
+                error=run_instruction_microprogram(CAR.to_ulong());
+                if(error == -1)
+                {
+                    ui->next_step->setEnabled(false);
+                    ui->continue_2->setEnabled(false);
+                    ui->stop->setEnabled(false);
+                    ui->restart->setEnabled(false);
+                }
+            }
+    }
+    else
+    {
+        ui->console->setText("You should compile your program first!\n");
+    }
+}
+
+
+void MainWindow::on_restart_clicked()
+{
+    on_pushButton_clicked();
+    on_next_step_clicked();
+
 }
 

@@ -8,6 +8,7 @@ private:
     int instruction;
     bool i;
     int address;
+    bool valid_address;
 public:
     assembly_i()
     {
@@ -31,6 +32,10 @@ public:
     void set_write(bool a)
     {
         this->write=a;
+    }
+    void set_valid_address(bool a)
+    {
+        this->valid_address = a;
     }
     void set(assembly_i *s)
     {
@@ -57,6 +62,10 @@ public:
     bool get_write()
     {
        return this->write;
+    };
+    bool get_valid_address()
+    {
+        return this->valid_address;
     };
     /*assembly_i& operator=(const assembly_i& s)
     {

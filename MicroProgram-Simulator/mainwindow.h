@@ -104,6 +104,8 @@ private slots:
 
     void on_run_clicked();
 
+    void on_next_step_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString issaved_micro="";
@@ -119,10 +121,12 @@ private:
     bitset<11> PC;
     bitset<7> SBR;
     bitset<7> CAR;
+    bitset<7> CAR_b;
     bool INDRCT;
     int tcommmands;
     int HLT;
     int compiled;
+    int run;
     vector<F1> symbol_f1;
     vector<F2> symbol_f2;
     vector<F3> symbol_f3;
