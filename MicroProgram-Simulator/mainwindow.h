@@ -40,7 +40,7 @@ public:
     bool isCondition(const QString& str);
     bool isBranch(const QString& str);
     int command_f(QString command , int check);
-    int run_instruction_microprogram(int l , bool i);
+    int run_instruction_microprogram(int l );
     bool fullSubtractor(bool b1, bool b2, bool& borrow);
     bitset<16> bitsetSubtract(bitset<16> x, bitset<16> y);
     bool fullAdder(bool b1, bool b2, bool& carry);
@@ -100,6 +100,10 @@ private slots:
 
     void on_pushButton_4_clicked();
 
+    void on_debug_clicked();
+
+    void on_run_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString issaved_micro="";
@@ -115,6 +119,7 @@ private:
     bitset<11> PC;
     bitset<7> SBR;
     bitset<7> CAR;
+    bool INDRCT;
     int tcommmands;
     int HLT;
     int compiled;

@@ -1585,15 +1585,15 @@ void MainWindow::on_new_assembly_clicked()
 void MainWindow::on_actionabout_project_triggered()
 {
     QMessageBox msgBox;
-    msgBox.setText("An assembler and hardware simulator for the Mano Basic Computer, a 16 bit computer.\n Programming By: Alireza Falakian \n GitHub link 🔗: https://github.com/falakian/MicroProgram-Simulator");
+    msgBox.setText("Program for simulating the execution of assembly codes using microprogram memory.\n Programming By: Alireza Falakian \n GitHub link 🔗: https://github.com/falakian/MicroProgram-Simulator");
     msgBox.exec();
 };
 
-int  MainWindow::run_instruction_microprogram(int l , bool id)
+int  MainWindow::run_instruction_microprogram(int l )
 {
     if(!ram_micro.at(l)->get_write())
     {
-        ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n It refers to the empty house of memory. \n");
+        ui->console->insertPlainText("error runtime : It refers to the empty house of memory. \n");
         return -1 ;
     }
     bitset<11> AR_T=AR;
@@ -1663,9 +1663,10 @@ int  MainWindow::run_instruction_microprogram(int l , bool id)
                     if(ram_assembly.at(line)->get_write())
                     {
                         bitset<1> i_bit(ram_assembly.at(line)->get_i());
-                        bitset<4> ins_bit(ram_assembly.at(line)->get_instruction());
+                        bitset<4> ins_bit(ram_assembly.at(line)->get_instruction()/4);
                         bitset<11> ad_bit(ram_assembly.at(line)->get_address());
                         bitset<16> micro_instruction(string(i_bit.to_string()+ins_bit.to_string()+ad_bit.to_string()));
+                        INDRCT = ram_assembly.at(line)->get_i();
                         DR_T = micro_instruction;
                     }
                     else
@@ -1716,7 +1717,7 @@ int  MainWindow::run_instruction_microprogram(int l , bool id)
                                 return -1;
                             }
                         }
-    if((ram_micro.at(l)->get_int_cd() == 1 && id) || (ram_micro.at(l)->get_int_cd() == 0) || (ram_micro.at(l)->get_int_cd() == 2 && AC[15] == inc[0]) || (ram_micro.at(l)->get_int_cd() == 3 && AC.to_ulong() == 0) )
+    if((ram_micro.at(l)->get_int_cd() == 1 && INDRCT) || (ram_micro.at(l)->get_int_cd() == 0) || (ram_micro.at(l)->get_int_cd() == 2 && AC[15] == inc[0]) || (ram_micro.at(l)->get_int_cd() == 3 && AC.to_ulong() == 0) )
     {
         if(ram_micro.at(l)->get_int_br() == 0 )
         {
@@ -1778,7 +1779,34 @@ int  MainWindow::run_instruction_microprogram(int l , bool id)
 
 void MainWindow::run_instruction()
 {
-
+    ui->console->setText("");
+    if(compiled == 1)
+    {
+        while(true)
+            if(PC.to_ulong() - 1 == HLT)
+            {
+                ui->console->setText("The program ran successfully!\n");
+                break;
+            }
+            else
+            {
+                int x = CAR.to_ulong();
+                int error = 0;
+                error=run_instruction_microprogram(x);
+                if(error == -1)
+                {
+                    break;
+                }
+                for(int j=0 ; j<8 ;j++ )
+                {
+                    ui->Microprogram_table->item(x , j)->setBackground(QColor(57, 62, 70));
+                }
+            }
+    }
+    else
+    {
+        ui->console->setText("You should compile your program first!\n");
+    }
 };
 
 
@@ -1827,6 +1855,10 @@ void MainWindow::on_pushButton_4_clicked()
     compiled=0;
     ui->run->setEnabled(true);
     ui->debug->setEnabled(true);
+    ui->next_step->setEnabled(false);
+    ui->continue_2->setEnabled(false);
+    ui->stop->setEnabled(false);
+    ui->restart->setEnabled(false);
 }
 
 void  MainWindow::resetRam()
@@ -1840,3 +1872,25 @@ void  MainWindow::resetRam()
         ram_assembly[i] = new assembly_i();
     }
 }
+
+void MainWindow::on_debug_clicked()
+{
+    if(compiled == 1)
+    {
+        ui->next_step->setEnabled(true);
+        ui->continue_2->setEnabled(true);
+        ui->stop->setEnabled(true);
+        ui->restart->setEnabled(true);
+    }
+    else
+    {
+        ui->console->setText("You should compile your program first!\n");
+    }
+}
+
+
+void MainWindow::on_run_clicked()
+{
+    run_instruction();
+}
+
