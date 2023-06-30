@@ -8,14 +8,14 @@ Computer simulator with microprogram memory written inside the Manu book
 # Usage
 
 Clone the repository:
-'''sell
+```shell
   git clone https://github.com/falakian/MicroProgram-Simulator.git
-'''
+```
 Change directory:
-'''sell
+```shell
   cd /exe
-'''
+```
 Run the simulator:
-'''sell
+```shell
   ./MicroProgram-Simulator.exe
-'''
+```
