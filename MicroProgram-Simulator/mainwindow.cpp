@@ -7,78 +7,32 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowTitle("MicroProgram Simulator");
-    F1 ins;
-    ins.set_intersection("NOP");
-    ins.set_dec("NO OPERATION1");
-    symbol_f1.push_back(ins);
-    ins.set_intersection("ADD");
-    ins.set_dec("AC");
-    symbol_f1.push_back(ins);
-    ins.set_intersection("CLRAC");
-    ins.set_dec("AC");
-    symbol_f1.push_back(ins);
-    ins.set_intersection("INCAC");
-    ins.set_dec("AC");
-    symbol_f1.push_back(ins);
-    ins.set_intersection("DRTAC");
-    ins.set_dec("AC");
-    symbol_f1.push_back(ins);
-    ins.set_intersection("DRTAR");
-    ins.set_dec("AR");
-    symbol_f1.push_back(ins);
-    ins.set_intersection("PCTAR");
-    ins.set_dec("AR");
-    symbol_f1.push_back(ins);
-    ins.set_intersection("WRITE");
-    ins.set_dec("M[AR]");
-    symbol_f1.push_back(ins);
-    F2 ins2;
-    ins2.set_intersection("NOP");
-    ins2.set_dec("NO OPERATION2");
-    symbol_f2.push_back(ins2);
-    ins2.set_intersection("SUB");
-    ins2.set_dec("AC");
-    symbol_f2.push_back(ins2);
-    ins2.set_intersection("OR");
-    ins2.set_dec("AC");
-    symbol_f2.push_back(ins2);
-    ins2.set_intersection("AND");
-    ins2.set_dec("AC");
-    symbol_f2.push_back(ins2);
-    ins2.set_intersection("READ");
-    ins2.set_dec("DR");
-    symbol_f2.push_back(ins2);
-    ins2.set_intersection("ACTDR");
-    ins2.set_dec("DR");
-    symbol_f2.push_back(ins2);
-    ins2.set_intersection("INCDR");
-    ins2.set_dec("DR");
-    symbol_f2.push_back(ins2);
-    ins2.set_intersection("PCTDR");
-    ins2.set_dec("DR");
-    symbol_f2.push_back(ins2);
-    F3 ins3;
-    ins3.set_intersection("NOP");
-    ins3.set_dec("NO OPERATION3");
-    symbol_f3.push_back(ins3);
-    ins3.set_intersection("XOR");
-    ins3.set_dec("AC");
-    symbol_f3.push_back(ins3);
-    ins3.set_intersection("COM");
-    ins3.set_dec("AC");
-    symbol_f3.push_back(ins3);
-    ins3.set_intersection("SHL");
-    ins3.set_dec("AC");
-    symbol_f3.push_back(ins3);
-    ins3.set_intersection("SHR");
-    ins3.set_dec("AC");
-    symbol_f3.push_back(ins3);
-    ins3.set_intersection("INCPC");
-    ins3.set_dec("PC");
-    symbol_f3.push_back(ins3);
-    ins3.set_intersection("ARTPC");
-    ins3.set_dec("PC");
-    symbol_f3.push_back(ins3);
+    Basic_Instructions("NOP" ,"NO OPERATION1" , 1);
+    Basic_Instructions("ADD" ,"AC" , 1);
+    Basic_Instructions("CLRAC" ,"AC" , 1);
+    Basic_Instructions("INCAC" ,"AC" , 1);
+    Basic_Instructions("DRTAC" ,"AC" , 1);
+    Basic_Instructions("DRTAR" ,"AR" , 1);
+    Basic_Instructions("PCTAR" ,"AR" , 1);
+    Basic_Instructions("WRITE" ,"M[AR]" , 1);
+
+    Basic_Instructions("NOP" ,"NO OPERATION2" , 2);
+    Basic_Instructions("SUB" ,"AC" , 2);
+    Basic_Instructions("OR" ,"AC" , 2);
+    Basic_Instructions("AND" ,"AC" , 2);
+    Basic_Instructions("READ" ,"DR" , 2);
+    Basic_Instructions("ACTDR" ,"DR" , 2);
+    Basic_Instructions("INCDR" ,"DR" , 2);
+    Basic_Instructions("PCTDR" ,"DR" , 2);
+
+    Basic_Instructions("NOP" ,"NO OPERATION3" , 3);
+    Basic_Instructions("XOR" ,"AC" , 3);
+    Basic_Instructions("COM" ,"AC" , 3);
+    Basic_Instructions("SHL" ,"AC" , 3);
+    Basic_Instructions("SHR" ,"AC" , 3);
+    Basic_Instructions("INCPC" ,"PC" , 3);
+    Basic_Instructions("ARTPC" ,"PC" , 3);
+
     condition["U"] = 0;
     condition["I"] = 1;
     condition["S"] = 2;
@@ -87,20 +41,21 @@ MainWindow::MainWindow(QWidget *parent)
     condition["i"] = 1;
     condition["s"] = 2;
     condition["z"] = 3;
+
     branch["JMP"] = 0;
     branch["CALL"] = 1;
     branch["RET"] = 2;
     branch["MAP"] = 3;
+
     ram_micro.resize(128);
-    for(int i=0 ; i<128 ; i++)
-    {
+    ram_assembly.resize(2048);
+    for(int i=0 ; i<128 ; i++){
         ram_micro[i] = new microprogram_i();
     }
-    ram_assembly.resize(2048);
-    for(int i=0 ; i<2048 ; i++)
-    {
+    for(int i=0 ; i<2048 ; i++){
         ram_assembly[i] = new assembly_i();
     }
+
     setWindowIcon(QIcon(":/new/prefix1/pic/icon.png"));
     ui->save_assembly->setIcon(QIcon(":/new/prefix1/pic/save.png"));
     ui->open_assembly->setIcon(QIcon(":/new/prefix1/pic/open.png"));
@@ -109,17 +64,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->open_micro->setIcon(QIcon(":/new/prefix1/pic/open.png"));
     ui->new_micro->setIcon(QIcon(":/new/prefix1/pic/new.png"));
     //ui->next_step->setIcon(QIcon(":/new/prefix1/pic/stepnext.png"));
-    ui->next_step->setEnabled(false);
     //ui->continue_2->setIcon(QIcon(":/new/prefix1/pic/continue.png"));
-    ui->continue_2->setEnabled(false);
     //ui->stop->setIcon(QIcon(":/new/prefix1/pic/stop.png"));
-    ui->stop->setEnabled(false);
     //ui->restart->setIcon(QIcon(":/new/prefix1/pic/restart.png"));
-    ui->restart->setEnabled(false);
-    ui->actionrestart->setEnabled(false);
-    ui->actionnext_step->setEnabled(false);
-    ui->actioncontinue->setEnabled(false);
-    ui->actionstop->setEnabled(false);
+    Button_Mode(false);
     ui->save_assembly->setIconSize(QSize(35, 35));
     ui->open_assembly->setIconSize(QSize(35, 35));
     ui->new_assembly->setIconSize(QSize(35, 35));
@@ -150,15 +98,7 @@ MainWindow::MainWindow(QWidget *parent)
     run = 0;
     debug = 0;
     debug_stop = 0;
-    ui->ac->setText(QString::fromStdString(AC.to_string()));
-    ui->dr->setText(QString::fromStdString(DR.to_string()));
-    ui->pc->setText(QString::fromStdString(PC.to_string()));
-    ui->ar->setText(QString::fromStdString(AR.to_string()));
-    ui->sbr->setText(QString::fromStdString(SBR.to_string()));
-    ui->car->setText(QString::fromStdString(CAR.to_string()));
-    ui->f1->setText("NOP");
-    ui->f2->setText("NOP");
-    ui->f3->setText("NOP");
+    Print_Registers(0);
     connect(ui->Microprogram->verticalScrollBar(), &QScrollBar::valueChanged,ui->micro_number->verticalScrollBar(),&QScrollBar::setValue);
     connect(ui->micro_number->verticalScrollBar(), &QScrollBar::valueChanged,ui->Microprogram->verticalScrollBar(),&QScrollBar::setValue);
     connect(ui->assembly->verticalScrollBar(), &QScrollBar::valueChanged,ui->assembel_number->verticalScrollBar(),&QScrollBar::setValue);
@@ -168,41 +108,36 @@ MainWindow::MainWindow(QWidget *parent)
 };
 
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow(){
     delete ui;
 };
 
-void MainWindow::printTable_RAM()
-{
-        ui->RAM_table->setRowCount(0);
-        ui->RAM_table->horizontalHeader()->setStyleSheet("color: black");
-        for(int i=0;i<2048;i++)
-        {
-            QString address = QString::number( i, 16 ).toUpper();
-            QTableWidgetItem *itmaddr = new QTableWidgetItem();
-            QTableWidgetItem *itmHex = new QTableWidgetItem();
-            itmaddr->setText(address);
-            itmHex->setText("0000");
-            ui->RAM_table->insertRow(i);
-            ui->RAM_table->setItem(i,0,itmaddr);
-            ui->RAM_table->setItem(i,2,itmHex);
-        }
+void MainWindow::printTable_RAM(){
+    ui->RAM_table->setRowCount(0);
+    ui->RAM_table->horizontalHeader()->setStyleSheet("color: black");
+    for(int i=0;i<2048;i++){
+        QString address = QString::number( i, 16 ).toUpper();
+        QTableWidgetItem *itmaddr = new QTableWidgetItem();
+        QTableWidgetItem *itmHex = new QTableWidgetItem();
+        itmaddr->setText(address);
+        itmHex->setText("0000");
+        ui->RAM_table->insertRow(i);
+        ui->RAM_table->setItem(i,0,itmaddr);
+        ui->RAM_table->setItem(i,2,itmHex);
+    }
 };
 
-void MainWindow::printTable_Microgram()
-{
-        ui->Microprogram_table->setRowCount(0);
-        ui->Microprogram_table->horizontalHeader()->setStyleSheet("color: black");
-        for(int i=0;i<128;i++)
-        {
-            QString address = QString::number( i, 16 ).toUpper();
-            QTableWidgetItem *itmaddr = new QTableWidgetItem(address);
-            QTableWidgetItem *itmHex = new QTableWidgetItem("00000");
-            ui->Microprogram_table->insertRow(i);
-            ui->Microprogram_table->setItem(i,0,itmaddr);
-            ui->Microprogram_table->setItem(i,7,itmHex);
-        }
+void MainWindow::printTable_Microgram(){
+    ui->Microprogram_table->setRowCount(0);
+    ui->Microprogram_table->horizontalHeader()->setStyleSheet("color: black");
+    for(int i=0;i<128;i++){
+        QString address = QString::number( i, 16 ).toUpper();
+        QTableWidgetItem *itmaddr = new QTableWidgetItem(address);
+        QTableWidgetItem *itmHex = new QTableWidgetItem("00000");
+        ui->Microprogram_table->insertRow(i);
+        ui->Microprogram_table->setItem(i,0,itmaddr);
+        ui->Microprogram_table->setItem(i,7,itmHex);
+    }
 };
 
 void MainWindow::printrow_ram_micro(int lc)
@@ -229,8 +164,7 @@ void MainWindow::printrow_ram_micro(int lc)
     ui->Microprogram_table->setItem(lc,7,itmHex);
 };
 
-void MainWindow::printrow_ram(int lc)
-{
+void MainWindow::printrow_ram(int lc){
     if(table_variable_ins.find(ram_assembly.at(lc)->get_instruction())!=table_variable_ins.end())
         ui->RAM_table->setItem(lc,1,new QTableWidgetItem(table_variable_ins[ram_assembly.at(lc)->get_instruction()]));
     else
@@ -238,29 +172,24 @@ void MainWindow::printrow_ram(int lc)
     QTableWidgetItem *itmHex = new QTableWidgetItem();
     bitset<1> i_bit(ram_assembly.at(lc)->get_i());
     bitset<4> ins_bit(ram_assembly.at(lc)->get_instruction());
-    if(ram_assembly.at(lc)->get_instruction()<0)
-    {
+    if(ram_assembly.at(lc)->get_instruction()<0){
        bitset<4> temp (string("0000")) ;
        ins_bit = temp;
     }
     bitset<11> ad_bit(ram_assembly.at(lc)->get_address());
     bitset<16> micro_instruction(string(i_bit.to_string()+ins_bit.to_string()+ad_bit.to_string()));
     QString hex;
-    if(micro_instruction.to_ulong() == 0)
-    {
+    if(micro_instruction.to_ulong() == 0){
         hex = "0000";
     }
-    else
-    {
+    else{
         hex = dectohex(micro_instruction.to_ulong());
     }
     itmHex->setText(hex);
     ui->RAM_table->setItem(lc,2,itmHex);
-
 };
 
-bool MainWindow::fullSubtractor(bool b1, bool b2, bool& borrow)
-{
+bool MainWindow::fullSubtractor(bool b1, bool b2, bool& borrow){
     bool diff;
     if (borrow) {
         diff = !(b1 ^ b2);
@@ -273,8 +202,7 @@ bool MainWindow::fullSubtractor(bool b1, bool b2, bool& borrow)
     return diff;
 };
 // Function to calculate difference between two bitsets
-bitset<16> MainWindow::bitsetSubtract(bitset<16> x, bitset<16> y)
-{
+bitset<16> MainWindow::bitsetSubtract(bitset<16> x, bitset<16> y){
     bool borrow = false;
     // bitset to store the sum of the two bitsets
     bitset<16> ans;
@@ -284,15 +212,13 @@ bitset<16> MainWindow::bitsetSubtract(bitset<16> x, bitset<16> y)
     return ans;
 };
 
-bool MainWindow::fullAdder(bool b1, bool b2, bool& carry)
-{
+bool MainWindow::fullAdder(bool b1, bool b2, bool& carry){
     bool sum = (b1 ^ b2) ^ carry;
     carry = (b1 && b2) || (b1 && carry) || (b2 && carry);
     return sum;
 };
 // Function to add two bitsets
-bitset<16> MainWindow::bitsetAdd(bitset<16>& x, bitset<16>& y)
-{
+bitset<16> MainWindow::bitsetAdd(bitset<16>& x, bitset<16>& y){
     bool carry = false;
     // bitset to store the sum of the two bitsets
     bitset<16> ans;
@@ -302,8 +228,7 @@ bitset<16> MainWindow::bitsetAdd(bitset<16>& x, bitset<16>& y)
     return ans;
 };
 
-bitset<7> MainWindow::bitsetAdd_7bit(bitset<7>& x, bitset<7>& y)
-{
+bitset<7> MainWindow::bitsetAdd_7bit(bitset<7>& x, bitset<7>& y){
     bool carry = false;
     // bitset to store the sum of the two bitsets
     bitset<7> ans;
@@ -314,20 +239,17 @@ bitset<7> MainWindow::bitsetAdd_7bit(bitset<7>& x, bitset<7>& y)
 };
 
 
-QString MainWindow::dectohex(int n)
-{
+QString MainWindow::dectohex(int n){
     // ans string to store hexadecimal number
     QString ans = "";
 
     while (n != 0) {
         // remainder variable to store remainder
         int rem = 0;
-
         // ch variable to store each character
         char ch;
         // storing remainder in rem variable.
         rem = n % 16;
-
         // check if temp < 10
         if (rem < 10) {
             ch = rem + 48;
@@ -335,7 +257,6 @@ QString MainWindow::dectohex(int n)
         else {
             ch = rem + 55;
         }
-
         // updating the ans string with the character variable
         ans += ch;
         n = n / 16;
@@ -352,28 +273,23 @@ QString MainWindow::dectohex(int n)
     return ans;
 };
 
-bitset<11> MainWindow::bit_16_to_11( bitset<16> a)
-{
+bitset<11> MainWindow::bit_16_to_11( bitset<16> a){
     bitset<11> res;
-    for(int k=0; k<11; k++)
-    {
+    for(int k=0; k<11; k++){
         res[k] = a[k];
     }
     return res;
 };
 
-bitset<16> MainWindow::bit_11_to_16( bitset<11> a)
-{
+bitset<16> MainWindow::bit_11_to_16( bitset<11> a){
     bitset<16> res(0);
-    for(int k=0; k<11; k++)
-    {
+    for(int k=0; k<11; k++){
         res[k] = a[k];
     }
     return res;
 };
 
-bitset<11> MainWindow::incpc(bitset<11> a)
-{
+bitset<11> MainWindow::incpc(bitset<11> a){
 
     bool carry = false;
     // bitset to store the sum of the two bitsets
@@ -385,18 +301,15 @@ bitset<11> MainWindow::incpc(bitset<11> a)
     return ans;
 };
 
-bitset<4> MainWindow::opcode( bitset<16> a)
-{
+bitset<4> MainWindow::opcode( bitset<16> a){
     bitset<4> res;
-    for(int k=11; k<15; k++)
-    {
+    for(int k=11; k<15; k++){
         res[k-11] = a[k];
     }
     return res;
 };
 
-bitset<7> MainWindow::maping( bitset<16> a)
-{
+bitset<7> MainWindow::maping( bitset<16> a){
     bitset<1> z(0);
     bitset<7> res;
     res[0] = z[0];
@@ -409,13 +322,10 @@ bitset<7> MainWindow::maping( bitset<16> a)
     return res;
 };
 
-bool MainWindow::isNumber(const QString &str)
-{
+bool MainWindow::isNumber(const QString &str){
     string check=str.toStdString();
-    for (char const &c : check)
-    {
-        if(c=='a' || c=='b' || c=='c' || c=='d' || c=='e' || c=='f'|| c=='A' || c=='B' || c=='C' || c=='D' || c=='E' || c=='F'|| c=='-' || c=='+')
-        {
+    for (char const &c : check){
+        if(c=='a' || c=='b' || c=='c' || c=='d' || c=='e' || c=='f'|| c=='A' || c=='B' || c=='C' || c=='D' || c=='E' || c=='F'|| c=='-' || c=='+'){
             continue;
         }
         if (isdigit(c) == 0) return false;
@@ -426,25 +336,21 @@ bool MainWindow::isNumber(const QString &str)
 bool MainWindow::isCondition(const QString& str)
 {
     string check=str.toStdString();
-    if(check =="U" || check=="u" || check=="I" || check=="i" || check=="s" || check=="S"|| check=="z" || check=="Z" )
-    {
+    if(check =="U" || check=="u" || check=="I" || check=="i" || check=="s" || check=="S"|| check=="z" || check=="Z" ){
             return true;
     }
     else return false;
 };
 
-bool MainWindow::isBranch(const QString& str)
-{
+bool MainWindow::isBranch(const QString& str){
     string check=str.toStdString();
-    if(check =="JMP" || check=="CALL" || check=="RET" || check=="MAP" )
-    {
+    if(check =="JMP" || check=="CALL" || check=="RET" || check=="MAP" ){
             return true;
     }
     else return false;
 };
 
-int MainWindow::command_f(QString command , int check)
-{
+int MainWindow::command_f(QString command , int check){
     if(check == 0)
     {
         if(command == "NOP")
@@ -525,8 +431,7 @@ int MainWindow::command_f(QString command , int check)
     return 3;
 };
 
-void MainWindow::on_pushButton_clicked()
-{
+void MainWindow::on_pushButton_clicked(){
     on_pushButton_4_clicked();
     tcommmands = ui->Microprogram->document()->blockCount();
     QTextDocument *doc = ui->Microprogram->document();
@@ -1092,8 +997,7 @@ if(error != 1)
 }
 };
 
-void MainWindow::compile_assembly()
-{
+void MainWindow::compile_assembly(){
     tcommmands = ui->assembly->document()->blockCount();
     QTextDocument *doc = ui->assembly->document();
     int  error = 0 , lc1=0 , org=0 , hlt_line=0 , end_line=0;
@@ -1449,8 +1353,7 @@ void MainWindow::compile_assembly()
     }
 };
 
-void MainWindow::on_open_micro_clicked()
-{
+void MainWindow::on_open_micro_clicked(){
     QString fileName = QFileDialog::getOpenFileName(this,tr("Open Text file"), "",tr("microprogram code file (*.bxb)"));
     if (fileName.isEmpty())
         return;
@@ -1460,8 +1363,7 @@ void MainWindow::on_open_micro_clicked()
         ifstream infile;
         infile.open(fileName.toLocal8Bit());
         char tmp[300];
-        while(infile.eof()!=true)
-        {
+        while(infile.eof()!=true){
             infile.getline(tmp,300);
             ui->Microprogram->insertPlainText(QString::fromStdString(tmp));
             ui->Microprogram->insertPlainText("\n");
@@ -1469,30 +1371,20 @@ void MainWindow::on_open_micro_clicked()
     }
 };
 
-
-
-
-void MainWindow::on_save_micro_clicked()
-{
-    if(issaved_micro =="")
-    {
+void MainWindow::on_save_micro_clicked(){
+    if(issaved_micro ==""){
        on_actionsave_as_microprogram_triggered();
     }
-    else
-    {
+    else{
         ofstream f;
         f.open(issaved_micro.toLocal8Bit(),ios::out);
         f<<ui->Microprogram->toPlainText().toStdString();
         f.flush();
         f.close();
-
     }
 };
 
-
-void MainWindow::on_actionsave_as_microprogram_triggered()
-{
-
+void MainWindow::on_actionsave_as_microprogram_triggered(){
     QString fileName = QFileDialog::getSaveFileName(this,tr("Save"), "",tr("Mytext microprogram file (*.bxb)"));
     if (fileName.isEmpty())
          return;
@@ -1502,51 +1394,39 @@ void MainWindow::on_actionsave_as_microprogram_triggered()
         f<<ui->Microprogram->toPlainText().toStdString();
         f.flush();
         f.close();
-
         issaved_micro=fileName;
     }
 };
 
 
-void MainWindow::on_new_micro_clicked()
-{
+void MainWindow::on_new_micro_clicked(){
     ui->Microprogram->clear();
     issaved_micro="";
 };
 
-
 void MainWindow::on_save_assembly_clicked()
 {
-    if(issaved_assembly =="")
-    {
+    if(issaved_assembly ==""){
        on_actionsave_as_assembly_code_triggered();
     }
-    else
-    {
+    else{
         ofstream f;
         f.open(issaved_assembly.toLocal8Bit(),ios::out);
         f<<ui->Microprogram->toPlainText().toStdString();
         f.flush();
         f.close();
-
     }
 };
 
-
-void MainWindow::on_actionsave_microprogram_triggered()
-{
+void MainWindow::on_actionsave_microprogram_triggered(){
     on_save_micro_clicked();
 };
 
-
-void MainWindow::on_actionopen_microprogram_triggered()
-{
+void MainWindow::on_actionopen_microprogram_triggered(){
     on_open_micro_clicked();
 };
 
-
-void MainWindow::on_actionsave_as_assembly_code_triggered()
-{
+void MainWindow::on_actionsave_as_assembly_code_triggered(){
     QString fileName = QFileDialog::getSaveFileName(this,tr("Save"), "",tr("Mytext assembly file (*.bxb)"));
     if (fileName.isEmpty())
          return;
@@ -1561,45 +1441,31 @@ void MainWindow::on_actionsave_as_assembly_code_triggered()
     }
 };
 
-
-void MainWindow::on_actionsave_assembly_code_triggered()
-{
+void MainWindow::on_actionsave_assembly_code_triggered(){
     on_save_assembly_clicked();
 };
 
-
-void MainWindow::on_actionopen_assembly_code_triggered()
-{
+void MainWindow::on_actionopen_assembly_code_triggered(){
     on_open_assembly_clicked();
 };
 
-
-void MainWindow::on_actionnew_assembly_code_triggered()
-{
+void MainWindow::on_actionnew_assembly_code_triggered(){
     on_new_assembly_clicked();
 };
 
-
-void MainWindow::on_actionnew_microprogram_triggered()
-{
+void MainWindow::on_actionnew_microprogram_triggered(){
     on_new_micro_clicked();
 };
 
-
-void MainWindow::on_actionexit_triggered()
-{
+void MainWindow::on_actionexit_triggered(){
     this->close();
 };
 
-
-void MainWindow::on_actioncompile_triggered()
-{
+void MainWindow::on_actioncompile_triggered(){
     on_pushButton_clicked();
 };
 
-
-void MainWindow::on_open_assembly_clicked()
-{
+void MainWindow::on_open_assembly_clicked(){
     QString fileName = QFileDialog::getOpenFileName(this,tr("Open Text file"), "",tr("assembly entry file (*.bxb)"));
     if (fileName.isEmpty())
         return;
@@ -1609,8 +1475,7 @@ void MainWindow::on_open_assembly_clicked()
         ifstream infile;
         infile.open(fileName.toLocal8Bit());
         char tmp[300];
-        while(infile.eof()!=true)
-        {
+        while(infile.eof()!=true){
             infile.getline(tmp,300);
             ui->assembly->insertPlainText(QString::fromStdString(tmp));
             ui->assembly->insertPlainText("\n");
@@ -1619,24 +1484,19 @@ void MainWindow::on_open_assembly_clicked()
 };
 
 
-void MainWindow::on_new_assembly_clicked()
-{
+void MainWindow::on_new_assembly_clicked(){
     ui->assembly->clear();
     issaved_assembly="";
 };
 
-
-void MainWindow::on_actionabout_project_triggered()
-{
+void MainWindow::on_actionabout_project_triggered(){
     QMessageBox msgBox;
     msgBox.setText("Program for simulating the execution of assembly codes using microprogram memory.\n Programming By: Alireza Falakian \n GitHub link 🔗: https://github.com/falakian/MicroProgram-Simulator");
     msgBox.exec();
 };
 
-int  MainWindow::run_instruction_microprogram(int l )
-{
-    if(!ram_micro.at(l)->get_write())
-    {
+int  MainWindow::run_instruction_microprogram(int l ){
+    if(!ram_micro.at(l)->get_write()){
         ui->console->insertPlainText("error runtime : It refers to the empty house of memory. \n");
         return -1 ;
     }
@@ -1668,8 +1528,7 @@ int  MainWindow::run_instruction_microprogram(int l )
                         if(ram_micro.at(l)->get_f1().get_intersection() == "PCTAR")
                             AR_T = PC;
                         else
-                            if(ram_micro.at(l)->get_f1().get_intersection() == "WRITE")
-                            {
+                            if(ram_micro.at(l)->get_f1().get_intersection() == "WRITE"){
                                 int address = bit_16_to_11(DR).to_ulong();
                                 bool i;
                                 if(DR[15] == 0)
@@ -1684,10 +1543,8 @@ int  MainWindow::run_instruction_microprogram(int l )
                                 ram_assembly.at(line)->set_write(true);
                                 printrow_ram(line);
                             }
-                            else
-                            {
-                                if(ram_micro.at(l)->get_f1().get_intersection() != "NOP")
-                                {
+                            else{
+                                if(ram_micro.at(l)->get_f1().get_intersection() != "NOP"){
                                     ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n The f1 command was not recognized. \n");
                                     return -1 ;
                                 }
@@ -1701,13 +1558,10 @@ int  MainWindow::run_instruction_microprogram(int l )
             if(ram_micro.at(l)->get_f2().get_intersection() == "AND")
                 AC_T = AC & DR;
             else
-                if(ram_micro.at(l)->get_f2().get_intersection() == "READ")
-                {
+                if(ram_micro.at(l)->get_f2().get_intersection() == "READ"){
                     int line = AR.to_ulong();
-                    if(ram_assembly.at(line)->get_write())
-                    {
-                        if(ram_assembly.at(line)->get_valid_address() == false && INDRCT)
-                        {
+                    if(ram_assembly.at(line)->get_write()){
+                        if(ram_assembly.at(line)->get_valid_address() == false && INDRCT){
                             ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n There is no address entered. \n");
                             INDRCT = false ;
                             return -1;
@@ -1719,8 +1573,7 @@ int  MainWindow::run_instruction_microprogram(int l )
                         INDRCT = ram_assembly.at(line)->get_i();
                         DR_T = micro_instruction;
                     }
-                    else
-                    {
+                    else{
                         ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n You want to read the contents of the empty memory house. \n");
                         return -1;
                     }
@@ -1734,10 +1587,8 @@ int  MainWindow::run_instruction_microprogram(int l )
                         else
                             if(ram_micro.at(l)->get_f2().get_intersection() == "PCTDR")
                                 DR_T = bit_11_to_16(PC);
-                            else
-                            {
-                                if(ram_micro.at(l)->get_f2().get_intersection() != "NOP")
-                                {
+                            else{
+                                if(ram_micro.at(l)->get_f2().get_intersection() != "NOP"){
                                     ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n The f2 command was not recognized. \n");
                                     return -1;
                                 }
@@ -1759,41 +1610,30 @@ int  MainWindow::run_instruction_microprogram(int l )
                     else
                         if(ram_micro.at(l)->get_f3().get_intersection() == "ARTPC")
                             PC_T = AR ;
-                        else
-                        {
-                            if(ram_micro.at(l)->get_f3().get_intersection() != "NOP")
-                            {
+                        else{
+                            if(ram_micro.at(l)->get_f3().get_intersection() != "NOP"){
                                 ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n The f3 command was not recognized. \n");
                                 return -1;
                             }
                         }
-    if((ram_micro.at(l)->get_int_cd() == 1 && INDRCT) || (ram_micro.at(l)->get_int_cd() == 0) || (ram_micro.at(l)->get_int_cd() == 2 && AC[15] == inc[0]) || (ram_micro.at(l)->get_int_cd() == 3 && AC.to_ulong() == 0) )
-    {
-        if(ram_micro.at(l)->get_int_br() == 0 )
-        {
+    if((ram_micro.at(l)->get_int_cd() == 1 && INDRCT) || (ram_micro.at(l)->get_int_cd() == 0) || (ram_micro.at(l)->get_int_cd() == 2 && AC[15] == inc[0]) || (ram_micro.at(l)->get_int_cd() == 3 && AC.to_ulong() == 0) ){
+        if(ram_micro.at(l)->get_int_br() == 0 ){
             CAR_T = AD_T ;
         }
-        else
-        {
-            if(ram_micro.at(l)->get_int_br() == 1)
-            {
+        else{
+            if(ram_micro.at(l)->get_int_br() == 1){
                 CAR_T = AD_T;
                 SBR_T = bitsetAdd_7bit(CAR , inccar);
             }
-            else
-            {
-                if(ram_micro.at(l)->get_int_br() == 2)
-                {
+            else{
+                if(ram_micro.at(l)->get_int_br() == 2){
                     CAR_T = SBR;
                 }
-                else
-                {
-                    if(ram_micro.at(l)->get_int_br() == 3)
-                    {
+                else{
+                    if(ram_micro.at(l)->get_int_br() == 3){
                         CAR_T = maping(DR);
                     }
-                    else
-                    {
+                    else{
                         ui->console->insertPlainText("error runtime : error in line:"+QString::number(l)+"\n branch is wrong. \n");
                         return -1;
                     }
@@ -1801,8 +1641,7 @@ int  MainWindow::run_instruction_microprogram(int l )
             }
         }
     }
-    else
-    {
+    else{
         CAR_T = bitsetAdd_7bit(CAR , inccar);
     }
     AR=AR_T;
@@ -1811,80 +1650,52 @@ int  MainWindow::run_instruction_microprogram(int l )
     PC=PC_T;
     SBR=SBR_T;
     CAR=CAR_T;
-    ui->ac->setText(QString::fromStdString(AC.to_string()));
-    ui->dr->setText(QString::fromStdString(DR.to_string()));
-    ui->pc->setText(QString::fromStdString(PC.to_string()));
-    ui->ar->setText(QString::fromStdString(AR.to_string()));
-    ui->sbr->setText(QString::fromStdString(SBR.to_string()));
-    ui->car->setText(QString::fromStdString(CAR.to_string()));
-    ui->f1->setText(ram_micro.at(l)->get_f1().get_intersection());
-    ui->f2->setText(ram_micro.at(l)->get_f2().get_intersection());
-    ui->f3->setText(ram_micro.at(l)->get_f3().get_intersection());
-    for(int j=0 ; j<8 ;j++ )
-    {
+    Print_Registers(l);
+    for(int j=0 ; j<8 ;j++ ){
         ui->Microprogram_table->item(l , j)->setBackground(QColor(37, 40, 45));
     }
     ui->Microprogram_table->verticalScrollBar()->setValue(l-7);
     return 0;
 };
 
-void MainWindow::run_instruction()
-{
-    if(debug == 1)
-    {
+void MainWindow::run_instruction(){
+    if(debug == 1){
         ui->console->setText("You are in debug mode, stop debugging first!\n");
     }
-    if(run == 1 || debug_stop == 1)
-    {
+    if(run == 1 || debug_stop == 1){
         on_pushButton_clicked();
     }
     ui->console->setText("");
     run = 1;
-    if(compiled == 1)
-    {
-        ui->next_step->setEnabled(false);
-        ui->continue_2->setEnabled(false);
-        ui->stop->setEnabled(false);
-        ui->restart->setEnabled(false);
-        ui->actionrestart->setEnabled(false);
-        ui->actionnext_step->setEnabled(false);
-        ui->actioncontinue->setEnabled(false);
-        ui->actionstop->setEnabled(false);
+    if(compiled == 1){
+        Button_Mode(false);
         while(true)
-            if(PC.to_ulong() - 1 == HLT)
-            {
+            if(PC.to_ulong() - 1 == HLT){
                 ui->console->setText("The program ran successfully!\n");
                 break;
             }
-            else
-            {
+            else{
                 int x = CAR.to_ulong();
                 int error = 0;
                 error=run_instruction_microprogram(x);
-                if(error == -1)
-                {
+                if(error == -1){
                     break;
                 }
-                for(int j=0 ; j<8 ;j++ )
-                {
+                for(int j=0 ; j<8 ;j++ ){
                     ui->Microprogram_table->item(x , j)->setBackground(QColor(57, 62, 70));
                 }
             }
     }
-    else
-    {
+    else{
         ui->console->setText("You should compile your program first!\n");
     }
     ui->Microprogram_table->verticalScrollBar()->setValue(0);
 };
 
-
-void MainWindow::on_Microprogram_blockCountChanged(int newBlockCount)
-{
+void MainWindow::on_Microprogram_blockCountChanged(int newBlockCount){
     ui->micro_number->setRowCount(0);
     ui->micro_number->setColumnCount(1);
-    for(int i=0;i<newBlockCount;i++)
-    {
+    for(int i=0;i<newBlockCount;i++){
         ui->micro_number->insertRow(i);
         QTableWidgetItem *n = new QTableWidgetItem(QString::number(i+1).toUpper());
         ui->micro_number->setItem(i,0,n);
@@ -1892,22 +1703,16 @@ void MainWindow::on_Microprogram_blockCountChanged(int newBlockCount)
    ui->micro_number->verticalScrollBar()->setValue(ui->Microprogram->verticalScrollBar()->value());
 };
 
-
-
-
-void MainWindow::on_assembly_blockCountChanged(int newBlockCount)
-{
+void MainWindow::on_assembly_blockCountChanged(int newBlockCount){
     ui->assembel_number->setRowCount(0);
     ui->assembel_number->setColumnCount(1);
-    for(int i=0;i<newBlockCount;i++)
-    {
+    for(int i=0;i<newBlockCount;i++){
         ui->assembel_number->insertRow(i);
         QTableWidgetItem *n = new QTableWidgetItem(QString::number(i+1).toUpper());
         ui->assembel_number->setItem(i,0,n);
     }
    ui->assembel_number->verticalScrollBar()->setValue(ui->assembly->verticalScrollBar()->value());
 };
-
 
 void MainWindow::on_pushButton_4_clicked()
 {
@@ -1926,219 +1731,169 @@ void MainWindow::on_pushButton_4_clicked()
     compiled=0;
     ui->run->setEnabled(true);
     ui->debug->setEnabled(true);
-    ui->next_step->setEnabled(false);
-    ui->continue_2->setEnabled(false);
-    ui->stop->setEnabled(false);
-    ui->restart->setEnabled(false);
-    ui->actionrestart->setEnabled(false);
-    ui->actionnext_step->setEnabled(false);
-    ui->actioncontinue->setEnabled(false);
-    ui->actionstop->setEnabled(false);
+    Button_Mode(false);
     run = 0;
     debug = 0;
     debug_stop = 0;
 };
 
-void  MainWindow::resetRam()
-{
-    for(int i=0 ; i<128 ; i++)
-    {
+void  MainWindow::resetRam(){
+    for(int i=0 ; i<128 ; i++){
         ram_micro[i] = new microprogram_i();
     }
-    for(int i=0 ; i<2048 ; i++)
-    {
+    for(int i=0 ; i<2048 ; i++){
         ram_assembly[i] = new assembly_i();
     }
 };
 
-void MainWindow::on_debug_clicked()
-{
-    if(run == 1 || debug_stop == 1)
-    {
+void MainWindow::on_debug_clicked(){
+    if(run == 1 || debug_stop == 1){
         on_pushButton_clicked();
     }
     ui->console->setText("");
-    if(compiled == 1)
-    {
-        ui->next_step->setEnabled(true);
-        ui->continue_2->setEnabled(true);
-        ui->stop->setEnabled(true);
-        ui->restart->setEnabled(true);
-        ui->actionrestart->setEnabled(true);
-        ui->actionnext_step->setEnabled(true);
-        ui->actioncontinue->setEnabled(true);
-        ui->actionstop->setEnabled(true);
+    if(compiled == 1){
+        Button_Mode(true);
     }
-    else
-    {
+    else{
         ui->console->setText("You should compile your program first!\n");
     }
 };
 
-
-void MainWindow::on_run_clicked()
-{
+void MainWindow::on_run_clicked(){
     run_instruction();
 };
 
-
-void MainWindow::on_next_step_clicked()
-{
+void MainWindow::on_next_step_clicked(){
     debug = 1;
     ui->console->setText("");
-    if(compiled == 1)
-    {
-            for(int j=0 ; j<8 ;j++ )
-            {
+    if(compiled == 1){
+            for(int j=0 ; j<8 ;j++ ){
                 ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
             }
-            if(PC.to_ulong() - 1 == HLT)
-            {
+            if(PC.to_ulong() - 1 == HLT){
                 ui->console->setText("The program ran successfully!\n");
-                ui->next_step->setEnabled(false);
-                ui->continue_2->setEnabled(false);
-                ui->stop->setEnabled(false);
-                ui->restart->setEnabled(false);
-                ui->actionrestart->setEnabled(false);
-                ui->actionnext_step->setEnabled(false);
-                ui->actioncontinue->setEnabled(false);
-                ui->actionstop->setEnabled(false);
+                Button_Mode(false);
                 debug = 0;
             }
-            else
-            {
+            else{
                 CAR_b= CAR;
                 int error = 0;
                 error=run_instruction_microprogram(CAR.to_ulong());
-                if(error == -1)
-                {
-                    ui->next_step->setEnabled(false);
-                    ui->continue_2->setEnabled(false);
-                    ui->stop->setEnabled(false);
-                    ui->restart->setEnabled(false);
-                    ui->actionrestart->setEnabled(false);
-                    ui->actionnext_step->setEnabled(false);
-                    ui->actioncontinue->setEnabled(false);
-                    ui->actionstop->setEnabled(false);
+                if(error == -1){
+                    Button_Mode(false);
                 }
             }
     }
-    else
-    {
+    else{
         ui->console->setText("You should compile your program first!\n");
     }
 };
 
-
-void MainWindow::on_restart_clicked()
-{
-    if(debug == 0)
-    {
+void MainWindow::on_restart_clicked(){
+    if(debug == 0){
         ui->console->setText("First, click the next step button!\n");
     }
-    else
-    {
-        for(int j=0 ; j<8 ;j++ )
-        {
+    else{
+        for(int j=0 ; j<8 ;j++ ){
             ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
         }
         on_pushButton_clicked();
-        ui->next_step->setEnabled(true);
-        ui->continue_2->setEnabled(true);
-        ui->stop->setEnabled(true);
-        ui->restart->setEnabled(true);
-        ui->actionrestart->setEnabled(true);
-        ui->actionnext_step->setEnabled(true);
-        ui->actioncontinue->setEnabled(true);
-        ui->actionstop->setEnabled(true);
+        Button_Mode(true);
         on_next_step_clicked();
     }
 };
 
-
-void MainWindow::on_continue_2_clicked()
-{
-    if(debug == 0)
-    {
+void MainWindow::on_continue_2_clicked(){
+    if(debug == 0){
         ui->console->setText("First, click the next step button!\n");
     }
-    else
-    {
+    else{
         debug =0;
-        for(int j=0 ; j<8 ;j++ )
-        {
+        for(int j=0 ; j<8 ;j++ ){
             ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
         }
         run_instruction();
-        ui->next_step->setEnabled(false);
-        ui->continue_2->setEnabled(false);
-        ui->stop->setEnabled(false);
-        ui->restart->setEnabled(false);
-        ui->actionrestart->setEnabled(false);
-        ui->actionnext_step->setEnabled(false);
-        ui->actioncontinue->setEnabled(false);
-        ui->actionstop->setEnabled(false);
+        Button_Mode(false);
     }
 };
 
-
-void MainWindow::on_stop_clicked()
-{
-    if(debug == 0)
-    {
+void MainWindow::on_stop_clicked(){
+    if(debug == 0){
         ui->console->setText("First, click the next step button!\n");
     }
-    else
-    {
-        for(int j=0 ; j<8 ;j++ )
-        {
+    else{
+        for(int j=0 ; j<8 ;j++ ){
             ui->Microprogram_table->item(CAR_b.to_ulong() , j)->setBackground(QColor(57, 62, 70));
         }
-        ui->next_step->setEnabled(false);
-        ui->continue_2->setEnabled(false);
-        ui->stop->setEnabled(false);
-        ui->restart->setEnabled(false);
-        ui->actionrestart->setEnabled(false);
-        ui->actionnext_step->setEnabled(false);
-        ui->actioncontinue->setEnabled(false);
-        ui->actionstop->setEnabled(false);
+        Button_Mode(false);
         debug_stop = 1 ;
     }
 };
 
+void MainWindow::Button_Mode(bool enable){
+    ui->next_step->setEnabled(enable);
+    ui->continue_2->setEnabled(enable);
+    ui->stop->setEnabled(enable);
+    ui->restart->setEnabled(enable);
+    ui->actionrestart->setEnabled(enable);
+    ui->actionnext_step->setEnabled(enable);
+    ui->actioncontinue->setEnabled(enable);
+    ui->actionstop->setEnabled(enable);
+};
 
-void MainWindow::on_actiondebug_triggered()
-{
+void MainWindow::Basic_Instructions(QString instruction , QString destination , int f){
+    switch(f){
+    case 1:{
+        F1 ins1(instruction,destination);
+        symbol_f1.push_back(ins1);
+        break;
+        }
+    case 2:{
+        F2 ins2(instruction,destination);
+        symbol_f2.push_back(ins2);
+        break;
+    }
+    case 3:{
+        F3 ins3(instruction,destination);
+        symbol_f3.push_back(ins3);
+        break;
+    }
+    }
+
+};
+
+void  MainWindow::Print_Registers(int line){
+    ui->ac->setText(QString::fromStdString(AC.to_string()));
+    ui->dr->setText(QString::fromStdString(DR.to_string()));
+    ui->pc->setText(QString::fromStdString(PC.to_string()));
+    ui->ar->setText(QString::fromStdString(AR.to_string()));
+    ui->sbr->setText(QString::fromStdString(SBR.to_string()));
+    ui->car->setText(QString::fromStdString(CAR.to_string()));
+    ui->f1->setText(ram_micro.at(line)->get_f1().get_intersection());
+    ui->f2->setText(ram_micro.at(line)->get_f2().get_intersection());
+    ui->f3->setText(ram_micro.at(line)->get_f3().get_intersection());
+}
+
+void MainWindow::on_actiondebug_triggered(){
     on_debug_clicked();
 };
 
-
-void MainWindow::on_actionrun_without_debug_triggered()
-{
+void MainWindow::on_actionrun_without_debug_triggered(){
     run_instruction();
 };
 
-
-void MainWindow::on_actionnext_step_triggered()
-{
+void MainWindow::on_actionnext_step_triggered(){
     on_next_step_clicked();
 };
 
-
-void MainWindow::on_actioncontinue_triggered()
-{
+void MainWindow::on_actioncontinue_triggered(){
     on_continue_2_clicked();
 };
 
-
-void MainWindow::on_actionrestart_triggered()
-{
+void MainWindow::on_actionrestart_triggered(){
     on_restart_clicked();
 };
 
-
-void MainWindow::on_actionstop_triggered()
-{
+void MainWindow::on_actionstop_triggered(){
     on_stop_clicked();
 };
-

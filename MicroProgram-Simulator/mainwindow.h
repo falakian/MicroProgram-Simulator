@@ -31,28 +31,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void printTable_RAM();
-    void printTable_Microgram();
-    void printrow_ram_micro(int lc);
-    void printrow_ram(int lc);
-    QString dectohex(int n);
-    bool isNumber(const QString& str);
-    bool isCondition(const QString& str);
-    bool isBranch(const QString& str);
-    int command_f(QString command , int check);
-    int run_instruction_microprogram(int l );
-    bool fullSubtractor(bool b1, bool b2, bool& borrow);
-    bitset<16> bitsetSubtract(bitset<16> x, bitset<16> y);
-    bool fullAdder(bool b1, bool b2, bool& carry);
-    bitset<7>bitsetAdd_7bit(bitset<7>& x, bitset<7>& y);
-    bitset<16> bitsetAdd(bitset<16>& x, bitset<16>& y);
-    bitset<11> bit_16_to_11( bitset<16> a);
-    bitset<16>bit_11_to_16( bitset<11> a);
-    bitset<11> incpc(bitset<11> a);
-    bitset<4> opcode( bitset<16> a);
-    bitset<7> maping( bitset<16> a);
-    void resetRam();
-    void run_instruction();
+
 protected:
     void compile_assembly();
 
@@ -94,7 +73,6 @@ private slots:
     void on_actionabout_project_triggered();
 
     void on_Microprogram_blockCountChanged(int newBlockCount);
-
 
     void on_assembly_blockCountChanged(int newBlockCount);
 
@@ -152,5 +130,32 @@ private:
     vector<F3> symbol_f3;
     vector<microprogram_i*> ram_micro ;
     vector<assembly_i*> ram_assembly;
+
+    //functions
+    void Button_Mode(bool enable);
+    bool fullSubtractor(bool b1, bool b2, bool& borrow);
+    void Basic_Instructions(QString instruction , QString destination , int f);
+    void Print_Registers(int line);
+    void printTable_RAM();
+    void printTable_Microgram();
+    void printrow_ram_micro(int lc);
+    void printrow_ram(int lc);
+    QString dectohex(int n);
+    bool isNumber(const QString& str);
+    bool isCondition(const QString& str);
+    bool isBranch(const QString& str);
+    int command_f(QString command , int check);
+    int run_instruction_microprogram(int l );
+    bitset<16> bitsetSubtract(bitset<16> x, bitset<16> y);
+    bool fullAdder(bool b1, bool b2, bool& carry);
+    bitset<7>bitsetAdd_7bit(bitset<7>& x, bitset<7>& y);
+    bitset<16> bitsetAdd(bitset<16>& x, bitset<16>& y);
+    bitset<11> bit_16_to_11( bitset<16> a);
+    bitset<16>bit_11_to_16( bitset<11> a);
+    bitset<11> incpc(bitset<11> a);
+    bitset<4> opcode( bitset<16> a);
+    bitset<7> maping( bitset<16> a);
+    void resetRam();
+    void run_instruction();
 };
 #endif // MAINWINDOW_H

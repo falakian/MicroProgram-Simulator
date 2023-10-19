@@ -14,8 +14,7 @@ private:
     int branch;
     int address;
 public:
-    microprogram_i()
-    {
+    microprogram_i(){
         this->write = false;
         this->condition=0;
         this->branch=0;
@@ -24,67 +23,66 @@ public:
         this->f2 = new F2;
         this->f3 = new F3;
     };
-    ~microprogram_i()
-    {
+
+    ~microprogram_i(){
         delete [] this->f1 ;
         delete [] this->f2 ;
         delete [] this->f3 ;
     };
-    void set_f1(F1 f1_code)
-    {
+
+    void set_f1(F1 f1_code){
        this->f1->set_intersection(f1_code.get_intersection());
        this->f1->set_dec(f1_code.get_dec());
     };
-    void set_f2(F2 f2_code)
-    {
+
+    void set_f2(F2 f2_code){
        this->f2->set_intersection(f2_code.get_intersection());
        this->f2->set_dec(f2_code.get_dec());
     };
-    void set_f3(F3 f3_code)
-    {
+
+    void set_f3(F3 f3_code){
        this->f3->set_intersection(f3_code.get_intersection());
        this->f3->set_dec(f3_code.get_dec());
     };
-    void set_condition(int c)
-    {
+
+    void set_condition(int c){
         this->condition = c;
     };
-    void set_branch(int b)
-    {
+
+    void set_branch(int b){
         this-> branch = b;
     };
-    void set_address(int a)
-    {
+
+    void set_address(int a){
         this->address=a;
     };
-    void set_write(bool a)
-    {
+
+    void set_write(bool a){
         this->write=a;
     };
-    F1 get_f1()
-    {
+
+    F1 get_f1(){
         return *this->f1;
     };
-    F2 get_f2()
-    {
+
+    F2 get_f2(){
         return *this->f2;
     };
-    F3 get_f3()
-    {
+
+    F3 get_f3(){
         return *this->f3;
     };
-    int get_int_cd()
-    {
+
+    int get_int_cd(){
         return this->condition;
     };
-    int get_int_br()
-    {
+
+    int get_int_br(){
         return this->branch;
     };
-    QString get_cd()
-    {
-        switch( this->condition)
-        {
+
+    QString get_cd(){
+        switch( this->condition){
         case 0:
             return "U";
             break;
@@ -100,10 +98,9 @@ public:
         }
         return "";
     };
-    QString get_br()
-    {
-        switch( this->branch)
-        {
+
+    QString get_br(){
+        switch( this->branch){
         case 0:
             return "JMP";
             break;
@@ -119,16 +116,16 @@ public:
         }
         return "";
     };
-    int get_address()
-    {
+
+    int get_address(){
         return this->address;
     };
-    bool get_write()
-    {
+
+    bool get_write(){
         return this->write;
     };
-    void set(microprogram_i *s)
-    {
+
+    void set(microprogram_i *s){
         this->write = s->write;
         this->condition = s->condition;
         this->branch = s->branch;

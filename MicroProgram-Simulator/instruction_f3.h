@@ -7,34 +7,29 @@ private:
     QString instruction;
     QString dec;
 public:
-F3()
-{
+F3(){
     this->instruction="NOP";
     this->dec = "NO OPERATION";
 };
-F3(QString ins , QString d)
-{
+
+F3(QString ins , QString d){
     this->instruction = ins;
     this->dec = d;
 };
 
-void set_intersection(QString ins)
-{
+void set_intersection(QString ins){
     this->instruction = ins;
 };
 
-void set_dec(QString d)
-{
+void set_dec(QString d){
     this->dec = d;
 };
 
-QString get_intersection()
-{
+QString get_intersection(){
     return this->instruction;
 };
 
-QString get_dec()
-{
+QString get_dec(){
     return this->dec;
 };
 

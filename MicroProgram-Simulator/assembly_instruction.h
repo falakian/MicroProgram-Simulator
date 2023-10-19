@@ -10,63 +10,62 @@ private:
     int address;
     bool valid_address;
 public:
-    assembly_i()
-    {
+    assembly_i(){
         this->write = false;
         this->i=false;
         this->address=131;
     }
     ~assembly_i(){}
-    void set_instruction(int c)
-    {
+
+    void set_instruction(int c){
         this->instruction = c;
     }
-    void set_i(bool b)
-    {
+
+    void set_i(bool b){
         this-> i = b;
     }
-    void set_address(int a)
-    {
+
+    void set_address(int a){
         this->address=a;
     }
-    void set_write(bool a)
-    {
+    void set_write(bool a){
         this->write=a;
     }
-    void set_valid_address(bool a)
-    {
+
+    void set_valid_address(bool a){
         this->valid_address = a;
     }
-    void set(assembly_i *s)
-    {
+
+    void set(assembly_i *s){
         this->write = s->write;
         this->instruction = s->instruction;
         this->i = s->i;
         this->address = s->address;
     };
-    int get_instruction()
-    {
+
+    int get_instruction(){
         return this->instruction;
     };
-    int get_address()
-    {
+
+    int get_address(){
         return this->address;
     };
-    int get_i()
-    {
+
+    int get_i(){
         if(this->i)
             return 1;
         else
             return 0;
     };
-    bool get_write()
-    {
+
+    bool get_write(){
        return this->write;
     };
-    bool get_valid_address()
-    {
+
+    bool get_valid_address(){
         return this->valid_address;
     };
+
     /*assembly_i& operator=(const assembly_i& s)
     {
       this->~assembly_i();
